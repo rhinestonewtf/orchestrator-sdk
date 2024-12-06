@@ -1,8 +1,5 @@
 {
   "type": "module",
-  "name": "orchestrator-sdk",
-  "version": "0.0.1",
-  "description": "A TypeScript library for using the Rhinestone Orchestrator",
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:types",
