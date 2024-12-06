@@ -1,12 +1,8 @@
-import { Execution } from '@rhinestone/module-sdk'
 import { Address, Hex } from 'viem'
 import { signOrderBundleWithOwnableValidator } from './common/signer'
-import { MetaIntent, SignedIntent, SignedOrderBundle } from './types'
+import { Execution, MetaIntent, SignedIntent, SignedOrderBundle } from './types'
 import { convertBigIntFields } from './utils'
-
-const axios = require('axios')
-
-require('dotenv').config()
+import axios from 'axios'
 
 export class Orchestrator {
   private serverUrl: string

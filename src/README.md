@@ -39,19 +39,19 @@ For API documentation, visit: [Swagger Docs](https://orchestrator-prototype-38oy
 ### Installation
 
 ```bash
-npm install viem @rhinestone/orchestrator-sdk
+npm install viem @rhinestone/module-sdk @rhinestone/orchestrator-sdk
 ```
 
 ```bash
-pnpm install viem @rhinestone/orchestrator-sdk
+pnpm install viem @rhinestone/module-sdk @rhinestone/orchestrator-sdk
 ```
 
 ```bash
-yarn add viem @rhinestone/orchestrator-sdk
+yarn add viem @rhinestone/module-sdk @rhinestone/orchestrator-sdk
 ```
 
 ```bash
-bun install viem @rhinestone/orchestrator-sdk
+bun install viem @rhinestone/module-sdk @rhinestone/orchestrator-sdk
 ```
 
 ### Quick Start
