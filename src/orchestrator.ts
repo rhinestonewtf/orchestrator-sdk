@@ -2,6 +2,7 @@ import { Address, Hex } from 'viem'
 import { signOrderBundleWithOwnableValidator } from './common/signer'
 import {
   BundleIdStatus,
+  Execution,
   MetaIntent,
   SignedIntent,
   SignedOrderBundle,
