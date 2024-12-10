@@ -1,8 +1,16 @@
 import { Address, Hex } from 'viem'
 import { signOrderBundleWithOwnableValidator } from './common/signer'
-import { Execution, MetaIntent, SignedIntent, SignedOrderBundle } from './types'
+import {
+  BundleIdStatus,
+  MetaIntent,
+  SignedIntent,
+  SignedOrderBundle,
+} from './types'
 import { convertBigIntFields } from './utils'
 import axios from 'axios'
+
+// TODO: Export more helpful constants like the contract addresses, Spokepool addresses, etc.
+// TODO: Add strict typing to the return values of the endpoints.
 
 export class Orchestrator {
   private serverUrl: string
@@ -16,7 +24,7 @@ export class Orchestrator {
   async createUserAccount(
     accountAddress: Address,
     chainIds: number[],
-  ): Promise<{ userId: string }> {
+  ): Promise<string> {
     try {
       const response = await axios.post(
         `${this.serverUrl}/users`,
@@ -36,6 +44,27 @@ export class Orchestrator {
     }
 
     throw new Error('Failed to create user account')
+  }
+
+  async getUserId(
+    accountAddress: Address,
+    chainId?: number,
+  ): Promise<{ userId: string; chainId: number }[]> {
+    try {
+      const response = await axios.get(`${this.serverUrl}/users`, {
+        headers: {
+          'x-api-key': this.apiKey,
+        },
+        params: {
+          accountAddress: accountAddress,
+          chainId: chainId ? chainId : undefined,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+    throw new Error('Failed to get user')
   }
 
   async getPortfolio(userId: string) {
@@ -86,7 +115,7 @@ export class Orchestrator {
   async postSignedOrderBundle(
     signedOrderBundle: SignedOrderBundle,
     userId: string,
-  ) {
+  ): Promise<string> {
     try {
       const response = await axios.post(
         `${this.serverUrl}/users/${userId}/bundles`,
@@ -99,19 +128,21 @@ export class Orchestrator {
           },
         },
       )
-      return response.data
+      return response.data.bundleId
     } catch (error) {
       if (error instanceof Error) {
         console.log(error)
       }
     }
+
+    throw new Error('Failed to post order bundle')
   }
 
   async postMetaIntentWithOwnableValidator(
     metaIntent: MetaIntent,
     userId: string,
     privateKey: Hex,
-  ) {
+  ): Promise<string> {
     try {
       const { orderBundle, injectedExecutions } = await this.getOrderPath(
         metaIntent,
@@ -132,7 +163,7 @@ export class Orchestrator {
           },
         },
       )
-      return response.data
+      return response.data.bundleId
     } catch (error) {
       if (error instanceof Error) {
         console.log(error)
@@ -141,7 +172,10 @@ export class Orchestrator {
     throw new Error('Failed to post order bundle')
   }
 
-  async getBundleStatus(userId: string, bundleId: string) {
+  async getBundleStatus(
+    userId: string,
+    bundleId: string,
+  ): Promise<BundleIdStatus> {
     try {
       const response = await axios.get(
         `${this.serverUrl}/users/${userId}/bundles/${bundleId}`,
@@ -151,6 +185,16 @@ export class Orchestrator {
           },
         },
       )
+
+      response.data.orderStatus = response.data.orderStatus.map(
+        (order: { depositId: string; status: string }) => {
+          return {
+            depositId: BigInt(order.depositId),
+            status: order.status,
+          }
+        },
+      )
+
       return response.data
     } catch (error) {
       console.log(error)

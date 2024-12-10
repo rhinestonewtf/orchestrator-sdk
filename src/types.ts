@@ -152,6 +152,11 @@ export type Execution = {
   callData: Hex
 }
 
+export type BundleIdStatus = {
+  bundleStatus: string
+  orderStatus: { depositId: bigint; status: string }[]
+}
+
 export type PackedUserOperation = {
   sender: Address
   nonce: bigint
