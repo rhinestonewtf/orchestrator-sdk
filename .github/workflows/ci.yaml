@@ -36,6 +36,7 @@ jobs:
         run: pnpm test
         env:
           ORCHESTRATOR_API_KEY: ${{ secrets.ORCHESTRATOR_API_KEY }}
+          BUNDLE_GENERATOR_PRIVATE_KEY: ${{ secrets.BUNDLE_GENERATOR_PRIVATE_KEY }}
 
   size:
     needs: ['build']
