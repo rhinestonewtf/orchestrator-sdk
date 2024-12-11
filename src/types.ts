@@ -107,7 +107,8 @@ export type DepositEvent = {
   outputToken: Address // address
   inputAmount: bigint // uint256
   outputAmount: bigint // uint256
-  destinationChainId: number // uint256 (indexed)
+  destinationChainId: number
+  originChainId: number
   depositId: bigint // uint256 (indexed)
   quoteTimestamp: number // uint32
   fillDeadline: number // uint32
