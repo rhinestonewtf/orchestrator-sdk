@@ -1,6 +1,5 @@
 import { Address } from 'viem'
 
-export * from './abi'
 export * from './smartContractTypes'
 export * from './registry'
 export * from './typehashTypes'
