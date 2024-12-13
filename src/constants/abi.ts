@@ -1,4 +1,2611 @@
-export const originExecutorAbi = [
+export const hookAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      { name: 'owner', type: 'address', internalType: 'address' },
+      {
+        name: 'orchestrator',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'WETH', type: 'address', internalType: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: '$enabledTokens',
+    inputs: [{ name: 'token', type: 'address', internalType: 'address' }],
+    outputs: [{ name: 'enabled', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: '$omniMode',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [{ name: 'enabled', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: '$whitelistedExecutors',
+    inputs: [
+      {
+        name: 'whitelistExecutor',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [{ name: 'enabled', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'WETH',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'contract IWETH' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'clearTrustedForwarder',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'getLockedAmount',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getLockedAssets',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'address[]', internalType: 'address[]' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getTotalApprovals',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: 'amount', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getVirtualBalance',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: 'balance', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isEnabledAsset',
+    inputs: [{ name: 'asset', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isModuleType',
+    inputs: [{ name: 'typeID', type: 'uint256', internalType: 'uint256' }],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    name: 'isTrustedForwarder',
+    inputs: [
+      { name: 'forwarder', type: 'address', internalType: 'address' },
+      { name: 'account', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'lockFunds',
+    inputs: [
+      {
+        name: 'tokenTransfer',
+        type: 'tuple',
+        internalType: 'struct TokenTransfer',
+        components: [
+          {
+            name: 'tokenAddress',
+            type: 'address',
+            internalType: 'address',
+          },
+          { name: 'amount', type: 'uint256', internalType: 'uint256' },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'lockFunds',
+    inputs: [
+      {
+        name: 'tokenTransfers',
+        type: 'tuple[]',
+        internalType: 'struct TokenTransfer[]',
+        components: [
+          {
+            name: 'tokenAddress',
+            type: 'address',
+            internalType: 'address',
+          },
+          { name: 'amount', type: 'uint256', internalType: 'uint256' },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'name',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    name: 'onInstall',
+    inputs: [{ name: 'data', type: 'bytes', internalType: 'bytes' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'onUninstall',
+    inputs: [{ name: '', type: 'bytes', internalType: 'bytes' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'owner',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'postCheck',
+    inputs: [{ name: 'hookData', type: 'bytes', internalType: 'bytes' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'preCheck',
+    inputs: [
+      { name: 'msgSender', type: 'address', internalType: 'address' },
+      { name: 'msgValue', type: 'uint256', internalType: 'uint256' },
+      { name: 'msgData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [{ name: 'hookData', type: 'bytes', internalType: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'registerApprovalSpend',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'renounceOwnership',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setOmniLock',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'enabled', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setToken',
+    inputs: [
+      { name: 'token', type: 'address', internalType: 'address' },
+      { name: 'enabled', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setTrustedForwarder',
+    inputs: [{ name: 'forwarder', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'transferOwnership',
+    inputs: [{ name: 'newOwner', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'trustedForwarder',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [
+      {
+        name: 'trustedForwarder',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'unlockFunds',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'version',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    name: 'whitelistExecutor',
+    inputs: [
+      { name: 'executor', type: 'address', internalType: 'address' },
+      { name: 'enabled', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'wipeLocks',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    name: 'ExecutorWhitelisted',
+    inputs: [
+      {
+        name: 'executor',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'enabled',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'FundsLocked',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'token',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'LogTokenApproval',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'asset',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'newValue',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ModuleInitialized',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'OwnershipTransferred',
+    inputs: [
+      {
+        name: 'previousOwner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'newOwner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'TempUnlockedFunds',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'asset',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'unlockedAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'UnlockedFunds',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'asset',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'unlockedAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'AccountLocked',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'AlreadyInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  { type: 'error', name: 'AssetLocked', inputs: [] },
+  {
+    type: 'error',
+    name: 'CanNotLockAsset',
+    inputs: [{ name: 'asset', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'CanNotLockThisAsset',
+    inputs: [{ name: 'asset', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'EnumerableMapNonexistentKey',
+    inputs: [{ name: 'key', type: 'bytes32', internalType: 'bytes32' }],
+  },
+  { type: 'error', name: 'HookInvalidSelector', inputs: [] },
+  {
+    type: 'error',
+    name: 'InsufficientFunds',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'asset', type: 'address', internalType: 'address' },
+    ],
+  },
+  { type: 'error', name: 'InvalidCallType', inputs: [] },
+  { type: 'error', name: 'InvalidInstallation', inputs: [] },
+  {
+    type: 'error',
+    name: 'InvalidUnlock',
+    inputs: [
+      { name: 'asset', type: 'address', internalType: 'address' },
+      { name: 'lockedAmount', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'LockViolated',
+    inputs: [
+      {
+        name: 'postExecBalance',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      { name: 'lockedAmount', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ModuleAlreadyInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ModuleNotInitialized',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'NegativeVirtualBalance',
+    inputs: [
+      {
+        name: 'totalApprovals',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'actualBalance',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'NegativeVirtualBalance',
+    inputs: [
+      {
+        name: 'totalApprovals',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'actualBalance',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'NotInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  { type: 'error', name: 'OmniLockEnabled', inputs: [] },
+  {
+    type: 'error',
+    name: 'OnlyWhitelistedExecutors',
+    inputs: [{ name: 'sender', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'OwnableInvalidOwner',
+    inputs: [{ name: 'owner', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'OwnableUnauthorizedAccount',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+  },
+] as const
+
+// TODO: Update this to the mainnet spokepool ABI
+export const spokepoolAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: '_wrappedNativeTokenAddress',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_depositQuoteTimeBuffer',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: '_fillDeadlineBuffer',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: '_l2Usdc',
+        type: 'address',
+        internalType: 'contract IERC20',
+      },
+      {
+        name: '_cctpTokenMessenger',
+        type: 'address',
+        internalType: 'contract ITokenMessenger',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  { type: 'receive', stateMutability: 'payable' },
+  {
+    type: 'function',
+    name: 'EMPTY_RELAYER',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'EMPTY_REPAYMENT_CHAIN_ID',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'INFINITE_FILL_DEADLINE',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MAX_EXCLUSIVITY_PERIOD_SECONDS',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MAX_TRANSFER_SIZE',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MESSENGER',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'UPDATE_V3_DEPOSIT_DETAILS_HASH',
+    inputs: [],
+    outputs: [{ name: '', type: 'bytes32', internalType: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: '__OvmSpokePool_init',
+    inputs: [
+      {
+        name: '_initialDepositId',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: '_crossDomainAdmin',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_withdrawalRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: '_l2Eth', type: 'address', internalType: 'address' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: '__SpokePool_init',
+    inputs: [
+      {
+        name: '_initialDepositId',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: '_crossDomainAdmin',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_withdrawalRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'cctpTokenMessenger',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract ITokenMessenger',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'chainId',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'crossDomainAdmin',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'deposit',
+    inputs: [
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'originToken', type: 'address', internalType: 'address' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      { name: 'relayerFeePct', type: 'int64', internalType: 'int64' },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+      { name: '', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'depositExclusive',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'inputToken', type: 'address', internalType: 'address' },
+      { name: 'outputToken', type: 'address', internalType: 'address' },
+      { name: 'inputAmount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'fillDeadline', type: 'uint32', internalType: 'uint32' },
+      {
+        name: 'exclusivityPeriod',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'depositFor',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'originToken', type: 'address', internalType: 'address' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      { name: 'relayerFeePct', type: 'int64', internalType: 'int64' },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+      { name: '', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'depositQuoteTimeBuffer',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'depositV3',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'inputToken', type: 'address', internalType: 'address' },
+      { name: 'outputToken', type: 'address', internalType: 'address' },
+      { name: 'inputAmount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'fillDeadline', type: 'uint32', internalType: 'uint32' },
+      {
+        name: 'exclusivityParameter',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'depositV3Now',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'inputToken', type: 'address', internalType: 'address' },
+      { name: 'outputToken', type: 'address', internalType: 'address' },
+      { name: 'inputAmount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'fillDeadlineOffset',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusivityPeriod',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'emergencyDeleteRootBundle',
+    inputs: [
+      { name: 'rootBundleId', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'enabledDepositRoutes',
+    inputs: [
+      { name: '', type: 'address', internalType: 'address' },
+      { name: '', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'executeRelayerRefundLeaf',
+    inputs: [
+      { name: 'rootBundleId', type: 'uint32', internalType: 'uint32' },
+      {
+        name: 'relayerRefundLeaf',
+        type: 'tuple',
+        internalType: 'struct SpokePoolInterface.RelayerRefundLeaf',
+        components: [
+          {
+            name: 'amountToReturn',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          { name: 'chainId', type: 'uint256', internalType: 'uint256' },
+          {
+            name: 'refundAmounts',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+          { name: 'leafId', type: 'uint32', internalType: 'uint32' },
+          {
+            name: 'l2TokenAddress',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'refundAddresses',
+            type: 'address[]',
+            internalType: 'address[]',
+          },
+        ],
+      },
+      { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'executeV3SlowRelayLeaf',
+    inputs: [
+      {
+        name: 'slowFillLeaf',
+        type: 'tuple',
+        internalType: 'struct V3SpokePoolInterface.V3SlowFill',
+        components: [
+          {
+            name: 'relayData',
+            type: 'tuple',
+            internalType: 'struct V3SpokePoolInterface.V3RelayData',
+            components: [
+              {
+                name: 'depositor',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'recipient',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'exclusiveRelayer',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'inputToken',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'outputToken',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
+                name: 'inputAmount',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'outputAmount',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'originChainId',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'depositId',
+                type: 'uint256',
+                internalType: 'uint256',
+              },
+              {
+                name: 'fillDeadline',
+                type: 'uint32',
+                internalType: 'uint32',
+              },
+              {
+                name: 'exclusivityDeadline',
+                type: 'uint32',
+                internalType: 'uint32',
+              },
+              { name: 'message', type: 'bytes', internalType: 'bytes' },
+            ],
+          },
+          { name: 'chainId', type: 'uint256', internalType: 'uint256' },
+          {
+            name: 'updatedOutputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+      { name: 'rootBundleId', type: 'uint32', internalType: 'uint32' },
+      { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'fill',
+    inputs: [
+      { name: 'orderId', type: 'bytes32', internalType: 'bytes32' },
+      { name: 'originData', type: 'bytes', internalType: 'bytes' },
+      { name: 'fillerData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'fillDeadlineBuffer',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'fillStatuses',
+    inputs: [{ name: '', type: 'bytes32', internalType: 'bytes32' }],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'fillV3Relay',
+    inputs: [
+      {
+        name: 'relayData',
+        type: 'tuple',
+        internalType: 'struct V3SpokePoolInterface.V3RelayData',
+        components: [
+          {
+            name: 'depositor',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'recipient',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'exclusiveRelayer',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'outputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'outputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'originChainId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'depositId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'fillDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
+            name: 'exclusivityDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          { name: 'message', type: 'bytes', internalType: 'bytes' },
+        ],
+      },
+      {
+        name: 'repaymentChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'fillV3RelayWithUpdatedDeposit',
+    inputs: [
+      {
+        name: 'relayData',
+        type: 'tuple',
+        internalType: 'struct V3SpokePoolInterface.V3RelayData',
+        components: [
+          {
+            name: 'depositor',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'recipient',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'exclusiveRelayer',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'outputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'outputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'originChainId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'depositId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'fillDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
+            name: 'exclusivityDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          { name: 'message', type: 'bytes', internalType: 'bytes' },
+        ],
+      },
+      {
+        name: 'repaymentChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'updatedOutputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'updatedRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'updatedMessage', type: 'bytes', internalType: 'bytes' },
+      {
+        name: 'depositorSignature',
+        type: 'bytes',
+        internalType: 'bytes',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'getCurrentTime',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getUnsafeDepositId',
+    inputs: [
+      { name: 'msgSender', type: 'address', internalType: 'address' },
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'depositNonce', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    name: 'initialize',
+    inputs: [
+      {
+        name: '_initialDepositId',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      {
+        name: '_crossDomainAdmin',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_withdrawalRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'l1Gas',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'l2Eth',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'multicall',
+    inputs: [{ name: 'data', type: 'bytes[]', internalType: 'bytes[]' }],
+    outputs: [{ name: 'results', type: 'bytes[]', internalType: 'bytes[]' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'numberOfDeposits',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'pauseDeposits',
+    inputs: [{ name: 'pause', type: 'bool', internalType: 'bool' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'pauseFills',
+    inputs: [{ name: 'pause', type: 'bool', internalType: 'bool' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'pausedDeposits',
+    inputs: [],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'pausedFills',
+    inputs: [],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'proxiableUUID',
+    inputs: [],
+    outputs: [{ name: '', type: 'bytes32', internalType: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'recipientCircleDomainId',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint32', internalType: 'uint32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'relayRootBundle',
+    inputs: [
+      {
+        name: 'relayerRefundRoot',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+      {
+        name: 'slowRelayRoot',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'remoteL1Tokens',
+    inputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'requestV3SlowFill',
+    inputs: [
+      {
+        name: 'relayData',
+        type: 'tuple',
+        internalType: 'struct V3SpokePoolInterface.V3RelayData',
+        components: [
+          {
+            name: 'depositor',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'recipient',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'exclusiveRelayer',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'outputToken',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'inputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'outputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'originChainId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'depositId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'fillDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
+            name: 'exclusivityDeadline',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          { name: 'message', type: 'bytes', internalType: 'bytes' },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'rootBundles',
+    inputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    outputs: [
+      {
+        name: 'slowRelayRoot',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+      {
+        name: 'relayerRefundRoot',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'setCrossDomainAdmin',
+    inputs: [
+      {
+        name: 'newCrossDomainAdmin',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setEnableRoute',
+    inputs: [
+      { name: 'originToken', type: 'address', internalType: 'address' },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      { name: 'enabled', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setL1GasLimit',
+    inputs: [{ name: 'newl1Gas', type: 'uint32', internalType: 'uint32' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setRemoteL1Token',
+    inputs: [
+      { name: 'l2Token', type: 'address', internalType: 'address' },
+      { name: 'l1Token', type: 'address', internalType: 'address' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setTokenBridge',
+    inputs: [
+      { name: 'l2Token', type: 'address', internalType: 'address' },
+      { name: 'tokenBridge', type: 'address', internalType: 'address' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setWithdrawalRecipient',
+    inputs: [
+      {
+        name: 'newWithdrawalRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'speedUpV3Deposit',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'depositId', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'updatedOutputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'updatedRecipient',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'updatedMessage', type: 'bytes', internalType: 'bytes' },
+      {
+        name: 'depositorSignature',
+        type: 'bytes',
+        internalType: 'bytes',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'tokenBridges',
+    inputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'tryMulticall',
+    inputs: [{ name: 'data', type: 'bytes[]', internalType: 'bytes[]' }],
+    outputs: [
+      {
+        name: 'results',
+        type: 'tuple[]',
+        internalType: 'struct MultiCallerUpgradeable.Result[]',
+        components: [
+          { name: 'success', type: 'bool', internalType: 'bool' },
+          { name: 'returnData', type: 'bytes', internalType: 'bytes' },
+        ],
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'unsafeDepositV3',
+    inputs: [
+      { name: 'depositor', type: 'address', internalType: 'address' },
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'inputToken', type: 'address', internalType: 'address' },
+      { name: 'outputToken', type: 'address', internalType: 'address' },
+      { name: 'inputAmount', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'depositNonce',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'fillDeadline', type: 'uint32', internalType: 'uint32' },
+      {
+        name: 'exclusivityParameter',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'upgradeTo',
+    inputs: [
+      {
+        name: 'newImplementation',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'upgradeToAndCall',
+    inputs: [
+      {
+        name: 'newImplementation',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'data', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'usdcToken',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'contract IERC20' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'withdrawalRecipient',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'wrappedNativeToken',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract WETH9Interface',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'AdminChanged',
+    inputs: [
+      {
+        name: 'previousAdmin',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'newAdmin',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'BeaconUpgraded',
+    inputs: [
+      {
+        name: 'beacon',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'EmergencyDeleteRootBundle',
+    inputs: [
+      {
+        name: 'rootBundleId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'EnabledDepositRoute',
+    inputs: [
+      {
+        name: 'originToken',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'enabled',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ExecutedRelayerRefundRoot',
+    inputs: [
+      {
+        name: 'amountToReturn',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'chainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'refundAmounts',
+        type: 'uint256[]',
+        indexed: false,
+        internalType: 'uint256[]',
+      },
+      {
+        name: 'rootBundleId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'leafId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'l2TokenAddress',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'refundAddresses',
+        type: 'address[]',
+        indexed: false,
+        internalType: 'address[]',
+      },
+      {
+        name: 'caller',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'FilledRelay',
+    inputs: [
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'totalFilledAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'fillAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'repaymentChainId',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'originChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'relayerFeePct',
+        type: 'int64',
+        indexed: false,
+        internalType: 'int64',
+      },
+      {
+        name: 'realizedLpFeePct',
+        type: 'int64',
+        indexed: false,
+        internalType: 'int64',
+      },
+      {
+        name: 'depositId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'destinationToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'relayer',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+      {
+        name: 'updatableRelayData',
+        type: 'tuple',
+        indexed: false,
+        internalType: 'struct SpokePool.RelayExecutionInfo',
+        components: [
+          {
+            name: 'recipient',
+            type: 'address',
+            internalType: 'address',
+          },
+          { name: 'message', type: 'bytes', internalType: 'bytes' },
+          {
+            name: 'relayerFeePct',
+            type: 'int64',
+            internalType: 'int64',
+          },
+          { name: 'isSlowRelay', type: 'bool', internalType: 'bool' },
+          {
+            name: 'payoutAdjustmentPct',
+            type: 'int256',
+            internalType: 'int256',
+          },
+        ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'FilledV3Relay',
+    inputs: [
+      {
+        name: 'inputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'outputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'inputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'repaymentChainId',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'originChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'depositId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'fillDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusivityDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'relayer',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+      {
+        name: 'relayExecutionInfo',
+        type: 'tuple',
+        indexed: false,
+        internalType: 'struct V3SpokePoolInterface.V3RelayExecutionEventInfo',
+        components: [
+          {
+            name: 'updatedRecipient',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'updatedMessage',
+            type: 'bytes',
+            internalType: 'bytes',
+          },
+          {
+            name: 'updatedOutputAmount',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'fillType',
+            type: 'uint8',
+            internalType: 'enum V3SpokePoolInterface.FillType',
+          },
+        ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'FundsDeposited',
+    inputs: [
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'originChainId',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'relayerFeePct',
+        type: 'int64',
+        indexed: false,
+        internalType: 'int64',
+      },
+      {
+        name: 'depositId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'originToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Initialized',
+    inputs: [
+      {
+        name: 'version',
+        type: 'uint8',
+        indexed: false,
+        internalType: 'uint8',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'PausedDeposits',
+    inputs: [
+      {
+        name: 'isPaused',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'PausedFills',
+    inputs: [
+      {
+        name: 'isPaused',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RelayedRootBundle',
+    inputs: [
+      {
+        name: 'rootBundleId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'relayerRefundRoot',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+      {
+        name: 'slowRelayRoot',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RequestedSpeedUpDeposit',
+    inputs: [
+      {
+        name: 'newRelayerFeePct',
+        type: 'int64',
+        indexed: false,
+        internalType: 'int64',
+      },
+      {
+        name: 'depositId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'updatedRecipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'updatedMessage',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+      {
+        name: 'depositorSignature',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RequestedSpeedUpV3Deposit',
+    inputs: [
+      {
+        name: 'updatedOutputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'depositId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'updatedRecipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'updatedMessage',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+      {
+        name: 'depositorSignature',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RequestedV3SlowFill',
+    inputs: [
+      {
+        name: 'inputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'outputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'inputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'originChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'depositId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'fillDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusivityDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetL1Gas',
+    inputs: [
+      {
+        name: 'newL1Gas',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetL2TokenBridge',
+    inputs: [
+      {
+        name: 'l2Token',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'tokenBridge',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetRemoteL1Token',
+    inputs: [
+      {
+        name: 'l2Token',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'l1Token',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetWithdrawalRecipient',
+    inputs: [
+      {
+        name: 'newWithdrawalRecipient',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetXDomainAdmin',
+    inputs: [
+      {
+        name: 'newAdmin',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'TokensBridged',
+    inputs: [
+      {
+        name: 'amountToReturn',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'chainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'leafId',
+        type: 'uint32',
+        indexed: true,
+        internalType: 'uint32',
+      },
+      {
+        name: 'l2TokenAddress',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'caller',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Upgraded',
+    inputs: [
+      {
+        name: 'implementation',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'V3FundsDeposited',
+    inputs: [
+      {
+        name: 'inputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'outputToken',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'inputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'outputAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'destinationChainId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'depositId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'quoteTimestamp',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'fillDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'exclusivityDeadline',
+        type: 'uint32',
+        indexed: false,
+        internalType: 'uint32',
+      },
+      {
+        name: 'depositor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'exclusiveRelayer',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  { type: 'error', name: 'ClaimedMerkleLeaf', inputs: [] },
+  { type: 'error', name: 'DepositsArePaused', inputs: [] },
+  { type: 'error', name: 'DisabledRoute', inputs: [] },
+  { type: 'error', name: 'ExpiredFillDeadline', inputs: [] },
+  { type: 'error', name: 'FillsArePaused', inputs: [] },
+  { type: 'error', name: 'InvalidChainId', inputs: [] },
+  { type: 'error', name: 'InvalidCrossDomainAdmin', inputs: [] },
+  { type: 'error', name: 'InvalidDepositorSignature', inputs: [] },
+  { type: 'error', name: 'InvalidExclusiveRelayer', inputs: [] },
+  { type: 'error', name: 'InvalidFillDeadline', inputs: [] },
+  { type: 'error', name: 'InvalidMerkleLeaf', inputs: [] },
+  { type: 'error', name: 'InvalidMerkleProof', inputs: [] },
+  { type: 'error', name: 'InvalidPayoutAdjustmentPct', inputs: [] },
+  { type: 'error', name: 'InvalidQuoteTimestamp', inputs: [] },
+  { type: 'error', name: 'InvalidRelayerFeePct', inputs: [] },
+  { type: 'error', name: 'InvalidSlowFillRequest', inputs: [] },
+  { type: 'error', name: 'InvalidWithdrawalRecipient', inputs: [] },
+  {
+    type: 'error',
+    name: 'LowLevelCallFailed',
+    inputs: [{ name: 'data', type: 'bytes', internalType: 'bytes' }],
+  },
+  { type: 'error', name: 'MaxTransferSizeExceeded', inputs: [] },
+  {
+    type: 'error',
+    name: 'MsgValueDoesNotMatchInputAmount',
+    inputs: [],
+  },
+  { type: 'error', name: 'NoSlowFillsInExclusivityWindow', inputs: [] },
+  { type: 'error', name: 'NotCrossDomainAdmin', inputs: [] },
+  { type: 'error', name: 'NotEOA', inputs: [] },
+  { type: 'error', name: 'NotExclusiveRelayer', inputs: [] },
+  { type: 'error', name: 'RelayFilled', inputs: [] },
+  { type: 'error', name: 'WrongERC7683OrderId', inputs: [] },
+] as const
+
+export const originModuleAbi = [
   {
     type: 'constructor',
     inputs: [
@@ -53,8 +2660,8 @@ export const originExecutorAbi = [
     inputs: [
       {
         name: 'payload',
-        type: 'tuple',
-        internalType: 'struct OriginExecutorPayload',
+        type: 'tuple[]',
+        internalType: 'struct OriginModulePayload[]',
         components: [
           {
             name: 'order',
@@ -82,11 +2689,6 @@ export const originExecutorAbi = [
                     internalType: 'address',
                   },
                   {
-                    name: 'targetAccount',
-                    type: 'address',
-                    internalType: 'address',
-                  },
-                  {
                     name: 'targetChainId',
                     type: 'uint64',
                     internalType: 'uint64',
@@ -109,12 +2711,17 @@ export const originExecutorAbi = [
                 internalType: 'struct AcrossTransfer',
                 components: [
                   {
-                    name: 'originExecutor',
+                    name: 'originModule',
                     type: 'address',
                     internalType: 'address',
                   },
                   {
                     name: 'originAccount',
+                    type: 'address',
+                    internalType: 'address',
+                  },
+                  {
+                    name: 'targetAccount',
                     type: 'address',
                     internalType: 'address',
                   },
@@ -238,8 +2845,8 @@ export const originExecutorAbi = [
     inputs: [
       {
         name: 'payload',
-        type: 'tuple[]',
-        internalType: 'struct OriginExecutorPayload[]',
+        type: 'tuple',
+        internalType: 'struct OriginModulePayload',
         components: [
           {
             name: 'order',
@@ -267,11 +2874,6 @@ export const originExecutorAbi = [
                     internalType: 'address',
                   },
                   {
-                    name: 'targetAccount',
-                    type: 'address',
-                    internalType: 'address',
-                  },
-                  {
                     name: 'targetChainId',
                     type: 'uint64',
                     internalType: 'uint64',
@@ -294,12 +2896,17 @@ export const originExecutorAbi = [
                 internalType: 'struct AcrossTransfer',
                 components: [
                   {
-                    name: 'originExecutor',
+                    name: 'originModule',
                     type: 'address',
                     internalType: 'address',
                   },
                   {
                     name: 'originAccount',
+                    type: 'address',
+                    internalType: 'address',
+                  },
+                  {
+                    name: 'targetAccount',
                     type: 'address',
                     internalType: 'address',
                   },
@@ -692,6 +3299,38 @@ export const originExecutorAbi = [
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'ModuleInitialized',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SpokePoolInitialized',
+    inputs: [
+      {
+        name: 'spokePool',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'weth',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
     type: 'error',
     name: 'AlreadyInitialized',
     inputs: [
@@ -725,13 +3364,21 @@ export const originExecutorAbi = [
   { type: 'error', name: 'InvalidOrchestratorSignature', inputs: [] },
   { type: 'error', name: 'InvalidOrderTarget', inputs: [] },
   { type: 'error', name: 'InvalidOriginAccount', inputs: [] },
-  { type: 'error', name: 'InvalidOriginExecutor', inputs: [] },
+  { type: 'error', name: 'InvalidOriginModule', inputs: [] },
+  { type: 'error', name: 'InvalidShortString', inputs: [] },
   { type: 'error', name: 'InvalidSpokePool', inputs: [] },
   { type: 'error', name: 'InvalidTokenReceived', inputs: [] },
   { type: 'error', name: 'InvalidUserSignature', inputs: [] },
   {
     type: 'error',
-    name: 'ModuleNotInitializedForAccount',
+    name: 'ModuleAlreadyInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ModuleNotInitialized',
     inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
   },
   {
@@ -742,6 +3389,308 @@ export const originExecutorAbi = [
     ],
   },
   { type: 'error', name: 'NotInitializing', inputs: [] },
+  {
+    type: 'error',
+    name: 'StringTooLong',
+    inputs: [{ name: 'str', type: 'string', internalType: 'string' }],
+  },
+  { type: 'error', name: 'UserIntentExpired', inputs: [] },
+  { type: 'error', name: 'UserOpFailed', inputs: [] },
+] as const
+
+export const targetModuleAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: 'entryPoint',
+        type: 'address',
+        internalType: 'contract IEntryPoint',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'SPOKEPOOL',
+    inputs: [],
+    outputs: [
+      { name: '', type: 'address', internalType: 'contract ISpokePool' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'callback',
+    inputs: [
+      { name: '', type: 'bytes32', internalType: 'bytes32' },
+      { name: '', type: 'bytes32', internalType: 'bytes32' },
+      { name: 'depositId', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'eip712Domain',
+    inputs: [],
+    outputs: [
+      { name: 'fields', type: 'bytes1', internalType: 'bytes1' },
+      { name: 'name', type: 'string', internalType: 'string' },
+      { name: 'version', type: 'string', internalType: 'string' },
+      { name: 'chainId', type: 'uint256', internalType: 'uint256' },
+      {
+        name: 'verifyingContract',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'salt', type: 'bytes32', internalType: 'bytes32' },
+      {
+        name: 'extensions',
+        type: 'uint256[]',
+        internalType: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'handleV3AcrossMessage',
+    inputs: [
+      { name: 'tokenSent', type: 'address', internalType: 'address' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+      { name: 'relay', type: 'address', internalType: 'address' },
+      { name: 'message', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'initSpokePool',
+    inputs: [
+      {
+        name: 'spokePool',
+        type: 'address',
+        internalType: 'contract ISpokePool',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'isDepositIdValid',
+    inputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'depositId', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isModuleType',
+    inputs: [{ name: 'typeID', type: 'uint256', internalType: 'uint256' }],
+    outputs: [{ name: 'moduleType', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    name: 'name',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'onInstall',
+    inputs: [{ name: 'data', type: 'bytes', internalType: 'bytes' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'onUninstall',
+    inputs: [{ name: 'data', type: 'bytes', internalType: 'bytes' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'version',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'AcrossV3Message',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'tokenSent',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'HandledDeposit',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'recipient',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'depositId',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Initialized',
+    inputs: [
+      {
+        name: 'version',
+        type: 'uint64',
+        indexed: false,
+        internalType: 'uint64',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ModuleInitialized',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SpokePoolInitialized',
+    inputs: [
+      {
+        name: 'spokePool',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'weth',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'AlreadyInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'AssetLocked',
+    inputs: [
+      { name: 'asset', type: 'address', internalType: 'address' },
+      { name: 'lockedAmount', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  { type: 'error', name: 'FeeExceedsAmount', inputs: [] },
+  { type: 'error', name: 'InvalidAccount', inputs: [] },
+  { type: 'error', name: 'InvalidAcrossPayload', inputs: [] },
+  {
+    type: 'error',
+    name: 'InvalidAcrossTransferHash',
+    inputs: [{ name: 'index', type: 'uint256', internalType: 'uint256' }],
+  },
+  { type: 'error', name: 'InvalidAmountReceived', inputs: [] },
+  { type: 'error', name: 'InvalidCallback', inputs: [] },
+  { type: 'error', name: 'InvalidChainId', inputs: [] },
+  { type: 'error', name: 'InvalidDepositId', inputs: [] },
+  { type: 'error', name: 'InvalidInitialization', inputs: [] },
+  { type: 'error', name: 'InvalidNonce', inputs: [] },
+  { type: 'error', name: 'InvalidOrchestrator', inputs: [] },
+  { type: 'error', name: 'InvalidOrchestratorSignature', inputs: [] },
+  { type: 'error', name: 'InvalidOrderTarget', inputs: [] },
+  { type: 'error', name: 'InvalidOriginAccount', inputs: [] },
+  { type: 'error', name: 'InvalidOriginModule', inputs: [] },
+  { type: 'error', name: 'InvalidShortString', inputs: [] },
+  { type: 'error', name: 'InvalidSpokePool', inputs: [] },
+  { type: 'error', name: 'InvalidTokenReceived', inputs: [] },
+  { type: 'error', name: 'InvalidUserSignature', inputs: [] },
+  {
+    type: 'error',
+    name: 'ModuleAlreadyInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ModuleNotInitialized',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'NotInitialized',
+    inputs: [
+      { name: 'smartAccount', type: 'address', internalType: 'address' },
+    ],
+  },
+  { type: 'error', name: 'NotInitializing', inputs: [] },
+  {
+    type: 'error',
+    name: 'StringTooLong',
+    inputs: [{ name: 'str', type: 'string', internalType: 'string' }],
+  },
+  { type: 'error', name: 'TargetChainDeadlineTimedOut', inputs: [] },
   { type: 'error', name: 'UserIntentExpired', inputs: [] },
   { type: 'error', name: 'UserOpFailed', inputs: [] },
 ] as const

@@ -147,6 +147,11 @@ export enum BundleStatus {
   ERROR = 'ERROR',
 }
 
+export type BundleIdStatus = {
+  bundleStatus: string
+  orderStatus: { depositId: bigint; status: string }[]
+}
+
 export type Execution = {
   target: Address
   value: bigint
