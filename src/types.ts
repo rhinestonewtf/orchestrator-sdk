@@ -1,4 +1,4 @@
-import { Address, Hex } from 'viem'
+import { Address, Chain, Hex } from 'viem'
 
 export type ChainAccountChallenge = {
   challengeRequired: boolean
@@ -11,7 +11,6 @@ export type Settlement = {
   orchestrator: Address
   recipient: Address
   settlementContract: Address
-  targetAccount: Address
   targetChainId: number
   fillDeadline: number
   lastDepositId: bigint
@@ -23,8 +22,9 @@ export type TokenTransfer = {
 }
 
 export type AcrossTransfer = {
-  originExecutor: Address
+  originModule: Address
   originAccount: Address
+  targetAccount: Address
   originChainId: number
   initiateDeadline: number
   maxFee: bigint
@@ -88,7 +88,7 @@ export type OriginOrder = {
   userSig: Hex
 }
 
-export type OriginExecutorPayload = {
+export type OriginModulePayload = {
   order: OriginOrder
   auctionFee: bigint
   orchestratorSignature: Hex
@@ -147,15 +147,15 @@ export enum BundleStatus {
   ERROR = 'ERROR',
 }
 
+export type BundleIdStatus = {
+  bundleStatus: string
+  orderStatus: { depositId: bigint; status: string }[]
+}
+
 export type Execution = {
   target: Address
   value: bigint
   callData: Hex
-}
-
-export type BundleIdStatus = {
-  bundleStatus: string
-  orderStatus: { depositId: bigint; status: string }[]
 }
 
 export type PackedUserOperation = {
@@ -175,4 +175,20 @@ export type Order = {
   acrossTransfer: AcrossTransfer
   smartDigests: SmartDigest
   userSig: Hex
+}
+
+export type OrchestratorChainConfig = {
+  rpcUrl: string
+  viemChain: Chain
+  spokepool: Address
+  hook: Address
+  originModule: Address
+  targetModule: Address
+  weth: Address
+  supportedTokens: TokenConfig[]
+}
+
+export type TokenConfig = {
+  symbol: string
+  address: Address
 }

@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv'
 
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
 import { Execution, getOrchestrator, MetaIntent, Orchestrator } from '../../src'
-import { baseUSDC } from '../constants'
 import { getEmptyUserOp } from '../../src/utils/userOp'
+import { getTokenAddress } from '../../src/constants'
 
 dotenv.config()
 
@@ -16,11 +16,11 @@ const generateRandomAddress = (): Address => {
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const userId = '157757fa-6952-4576-8858-49d9145987ee'
-  const accountAddress = '0xFfF799094Ede20f26d06A6Ff9bFDca13AD260018'
+  const userId = '581379d0-2fdd-4ea3-9aab-b900f7ed3e30'
+  const accountAddress = '0x7F1eA505b099BA673937a61A4c9B161c115c6E01'
 
   const execution: Execution = {
-    target: baseUSDC,
+    target: getTokenAddress('USDC', 8453),
     value: 0n,
     callData: encodeFunctionData({
       abi: erc20Abi,
@@ -33,7 +33,7 @@ describe('Orchestrator Service', () => {
     targetChainId: 8453, // Base
     tokenTransfers: [
       {
-        tokenAddress: baseUSDC,
+        tokenAddress: getTokenAddress('USDC', 8453),
         amount: 2n,
       },
     ],
