@@ -12,7 +12,6 @@ export const smartContractTypes = {
     { name: 'orchestrator', type: 'address' },
     { name: 'recipient', type: 'address' },
     { name: 'settlementContract', type: 'address' },
-    { name: 'targetAccount', type: 'address' },
     { name: 'targetChainId', type: 'uint64' },
     { name: 'fillDeadline', type: 'uint32' },
     { name: 'lastDepositId', type: 'uint256' },
@@ -22,8 +21,9 @@ export const smartContractTypes = {
     { name: 'amount', type: 'uint256' },
   ],
   AcrossTransfer: [
-    { name: 'originExecutor', type: 'address' },
+    { name: 'originModule', type: 'address' },
     { name: 'originAccount', type: 'address' },
+    { name: 'targetAccount', type: 'address' },
     { name: 'originChainId', type: 'uint64' },
     { name: 'initiateDeadline', type: 'uint32' },
     { name: 'maxFee', type: 'uint256' },
@@ -37,7 +37,7 @@ export const smartContractTypes = {
     { name: 'smartDigests', type: 'SmartDigest' },
     { name: 'userSig', type: 'bytes' },
   ],
-  OriginExecutorPayload: [
+  OriginModulePayload: [
     { name: 'order', type: 'Order' },
     { name: 'auctionFee', type: 'uint256' },
     { name: 'orchestratorSig', type: 'bytes' },
@@ -98,7 +98,6 @@ export const smartContractTypes = {
             { name: 'orchestrator', type: 'address' },
             { name: 'recipient', type: 'address' },
             { name: 'settlementContract', type: 'address' },
-            { name: 'targetAccount', type: 'address' },
             { name: 'targetChainId', type: 'uint64' },
             { name: 'fillDeadline', type: 'uint32' },
             { name: 'lastDepositId', type: 'uint256' },
@@ -124,8 +123,9 @@ export const smartContractTypes = {
           name: 'acrossTransfer',
           type: 'tuple',
           components: [
-            { name: 'originExecutor', type: 'address' },
+            { name: 'originModule', type: 'address' },
             { name: 'originAccount', type: 'address' },
+            { name: 'targetAccount', type: 'address' },
             { name: 'originChainId', type: 'uint64' },
             { name: 'initiateDeadline', type: 'uint32' },
             { name: 'maxFee', type: 'uint256' },
