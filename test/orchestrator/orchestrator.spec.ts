@@ -1,9 +1,11 @@
 import * as dotenv from 'dotenv'
 
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
-import { Execution, getOrchestrator, MetaIntent, Orchestrator } from '../../src'
+import { Execution, getOrchestrator, MetaIntent } from '../../src'
+import { Orchestrator } from '../../src/orchestrator' // Ensure this path is correct
 import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
+import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
 
 dotenv.config()
 
@@ -43,7 +45,9 @@ describe('Orchestrator Service', () => {
   }
 
   beforeAll(async () => {
-    orchestrator = getOrchestrator(process.env.ORCHESTRATOR_API_KEY!)
+    orchestrator = getOrchestrator(
+      process.env.ORCHESTRATOR_API_KEY!,
+    ) as unknown as Orchestrator
   })
 
   afterAll(async () => {
@@ -96,10 +100,11 @@ describe('Orchestrator Service', () => {
   })
 
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
-    const bundleId = await orchestrator.postMetaIntentWithOwnableValidator(
+    const bundleId = await postMetaIntentWithOwnableValidator(
       metaIntent,
       userId,
       process.env.BUNDLE_GENERATOR_PRIVATE_KEY! as Hex,
+      orchestrator,
     )
 
     expect(bundleId).toBeDefined()

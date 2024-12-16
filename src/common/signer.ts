@@ -1,49 +1,32 @@
-import {
-  getOwnableValidatorSignature,
-  OWNABLE_VALIDATOR_ADDRESS,
-} from '@rhinestone/module-sdk'
 import { hashTypedData, Hex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { SignedIntent, SignedOrderBundle } from '../types'
 import { smartContractTypes } from '../constants'
 import { getOrderDomain } from '../utils'
 
-
-export async function signOrderBundleWithOwnableValidator(
+export async function getOrderBundleHash(
   orderBundle: SignedIntent,
-  privateKey: Hex,
-): Promise<SignedOrderBundle> {
-  const hash = hashTypedData({
+): Promise<Hex> {
+  return hashTypedData({
     domain: getOrderDomain(),
     types: smartContractTypes,
     primaryType: 'SignedIntent',
     message: orderBundle,
   })
+}
 
-  const account = privateKeyToAccount(privateKey)
-
-  // Add the prefix for ownable validator sig
-  const signature = await account.signMessage({
-    message: {
-      raw: hash,
-    },
-  })
-
-  const ownableValidatorSig = getOwnableValidatorSignature({
-    signatures: [signature],
-  })
-
-  const encodedSignature = (OWNABLE_VALIDATOR_ADDRESS +
-    ownableValidatorSig.slice(2)) as Hex
-
+export async function getSignedOrderBundle(
+  orderBundle: SignedIntent,
+  orderBundleSignature: Hex,
+): Promise<SignedOrderBundle> {
   return {
     settlement: orderBundle.settlement,
     acrossTransfers: orderBundle.acrossTransfers.map((transfer) => ({
       ...transfer,
-      userSignature: encodedSignature,
+      userSignature: orderBundleSignature,
     })),
     targetChainExecutions: orderBundle.targetChainExecutions,
-    targetExecutionSignature: encodedSignature,
+    targetExecutionSignature: orderBundleSignature,
     userOp: orderBundle.userOp,
   }
 }
