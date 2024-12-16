@@ -18,8 +18,8 @@ const generateRandomAddress = (): Address => {
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const userId = '581379d0-2fdd-4ea3-9aab-b900f7ed3e30'
-  const accountAddress = '0x7F1eA505b099BA673937a61A4c9B161c115c6E01'
+  const userId = 'd6f64241-a62c-4542-bb23-e78d7e1e0cd6'
+  const accountAddress = '0x9EB7504B7546b1B66e177B364A3566eC10132A40'
 
   const execution: Execution = {
     target: getTokenAddress('USDC', 8453),

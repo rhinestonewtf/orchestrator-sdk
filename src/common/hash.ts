@@ -15,10 +15,10 @@ import {
   SmartDigest,
   TokenTransfer,
 } from '../types'
-import { typehashTypes } from '../constants/typehashTypes'
+import { typehashTypes } from '../constants'
 
 const ACROSS_TRANSFER_TYPEHASH =
-  '0xee2056ef95579555475af3a751f04f29e041cedf8232901492fffb1808c7fd99'
+  '0x2c207ea4e14283d6620837628d3aa63486714ffdf9bd83436f971b1157f5d51a'
 
 const EXECUTION_TYPEHASH =
   '0x37fb04e5593580b36bfacc47d8b1a4b9a2acb88a513bf153760f925a6723d4b5'
@@ -33,10 +33,10 @@ const TOKEN_TRANSFER_TYPEHASH =
   '0xef3136c9bbc8441e191dc61c253d9479f54ef95a64b36b8581d51a156f7512c4'
 
 const SIGNED_INTENT_TYPEHASH =
-  '0xd714a8401248b943a7db2c285bdacfa439f95fc2804282de474bea0194ee89e4'
+  '0x9bafa23b0ee7874c656c66202e7ff9c0f6b794631cfff0a50b9bdd2041f1d4be'
 
 const SIGNED_INTENT_WITH_AUCTION_FEE_TYPEHASH =
-  '0x3fcc83bf31d227d374fb57ade6ccfa70ffde400e9b905cb3ab0c30c18a29fa64'
+  '0xa0abe415300d58e370d7d8eb5507aa75764fb2d77d9d91ee92a3415ad1b22a37'
 
 const SIGNED_USER_OP_TYPEHASH =
   '0x81264956c7c6625e9c85b65ea4d4eaeb56247ec77f1b277e3635a99ff98b11c2'
