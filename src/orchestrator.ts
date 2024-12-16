@@ -1,5 +1,4 @@
 import { Address, Hex } from 'viem'
-import { signOrderBundleWithOwnableValidator } from './common/signer'
 import {
   BundleIdStatus,
   Execution,
@@ -10,7 +9,6 @@ import {
 import { convertBigIntFields } from './utils'
 import axios from 'axios'
 
-// TODO: Export more helpful constants like the contract addresses, Spokepool addresses, etc.
 // TODO: Add strict typing to the return values of the endpoints.
 
 export class Orchestrator {
@@ -136,40 +134,6 @@ export class Orchestrator {
       }
     }
 
-    throw new Error('Failed to post order bundle')
-  }
-
-  async postMetaIntentWithOwnableValidator(
-    metaIntent: MetaIntent,
-    userId: string,
-    privateKey: Hex,
-  ): Promise<string> {
-    try {
-      const { orderBundle, injectedExecutions } = await this.getOrderPath(
-        metaIntent,
-        userId,
-      )
-      const signedOrderBundle = await signOrderBundleWithOwnableValidator(
-        orderBundle,
-        privateKey,
-      )
-      const response = await axios.post(
-        `${this.serverUrl}/users/${userId}/bundles`,
-        {
-          signedOrderBundle: signedOrderBundle,
-        },
-        {
-          headers: {
-            'x-api-key': this.apiKey,
-          },
-        },
-      )
-      return response.data.bundleId
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error)
-      }
-    }
     throw new Error('Failed to post order bundle')
   }
 

@@ -1,9 +1,11 @@
 import * as dotenv from 'dotenv'
 
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
-import { Execution, getOrchestrator, MetaIntent, Orchestrator } from '../../src'
+import { Execution, getOrchestrator, MetaIntent } from '../../src'
+import { Orchestrator } from '../../src/orchestrator' // Ensure this path is correct
 import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
+import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
 
 dotenv.config()
 
@@ -16,8 +18,8 @@ const generateRandomAddress = (): Address => {
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const userId = '581379d0-2fdd-4ea3-9aab-b900f7ed3e30'
-  const accountAddress = '0x7F1eA505b099BA673937a61A4c9B161c115c6E01'
+  const userId = 'd6f64241-a62c-4542-bb23-e78d7e1e0cd6'
+  const accountAddress = '0x9EB7504B7546b1B66e177B364A3566eC10132A40'
 
   const execution: Execution = {
     target: getTokenAddress('USDC', 8453),
@@ -43,7 +45,9 @@ describe('Orchestrator Service', () => {
   }
 
   beforeAll(async () => {
-    orchestrator = getOrchestrator(process.env.ORCHESTRATOR_API_KEY!)
+    orchestrator = getOrchestrator(
+      process.env.ORCHESTRATOR_API_KEY!,
+    ) as unknown as Orchestrator
   })
 
   afterAll(async () => {
@@ -96,10 +100,11 @@ describe('Orchestrator Service', () => {
   })
 
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
-    const bundleId = await orchestrator.postMetaIntentWithOwnableValidator(
+    const bundleId = await postMetaIntentWithOwnableValidator(
       metaIntent,
       userId,
       process.env.BUNDLE_GENERATOR_PRIVATE_KEY! as Hex,
+      orchestrator,
     )
 
     expect(bundleId).toBeDefined()
