@@ -10,8 +10,7 @@ import {
   sepolia,
 } from 'viem/chains'
 import { OrchestratorChainConfig, TokenConfig } from '../types'
-
-require('dotenv').config()
+import 'dotenv/config'
 
 export const NATIVE_SENTINEL_ADDRESS: Address =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
