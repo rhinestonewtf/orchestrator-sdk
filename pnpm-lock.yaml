@@ -7,6 +7,22 @@ settings:
 importers:
 
   .:
+    dependencies:
+      axios:
+        specifier: ^1.7.4
+        version: 1.7.9
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      permissionless:
+        specifier: ^0.2.15
+        version: 0.2.21(viem@2.21.54(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4))
+      viem:
+        specifier: ^2.21.53
+        version: 2.21.54(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
+      ws:
+        specifier: ^8.18.0
+        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.1
@@ -29,12 +45,6 @@ importers:
       '@types/ws':
         specifier: ^8.5.13
         version: 8.5.13
-      axios:
-        specifier: ^1.7.4
-        version: 1.7.9
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.0)
@@ -44,9 +54,6 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.14.12)(ts-node@10.9.2(@types/node@20.14.12)(typescript@5.5.4))
-      permissionless:
-        specifier: ^0.2.15
-        version: 0.2.21(viem@2.21.54(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4))
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -65,12 +72,6 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
-      viem:
-        specifier: ^2.21.53
-        version: 2.21.54(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
-      ws:
-        specifier: ^8.18.0
-        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   src:
     dependencies:
