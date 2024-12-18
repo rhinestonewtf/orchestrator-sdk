@@ -17,7 +17,7 @@ export const NATIVE_SENTINEL_ADDRESS: Address =
 
 const hook: Address = '0xF7913a68dD7bFF74f0828Ac9d879C6195B370EB8'
 const originModule: Address = '0xD3C6B5539E0d70F58160Cd023DB16853847Ec61E'
-const targetModule: Address = '0x67C1b504004AbAf69e153AF7b745b521BeafCd43'
+const targetModule: Address = '0xf037B7c95710D600F8a0898b5F3c4d1bE3947A4B'
 const spokepool: Address = '0x7C941271191E0c9A01E360BAE660D21568fc6ca0'
 const weth: Address = '0x47D41c334497f06ab42e60C4036c506D924DDc9c'
 
