@@ -10,6 +10,7 @@ import {
   sepolia,
 } from 'viem/chains'
 import { OrchestratorChainConfig, TokenConfig } from '../types'
+
 import 'dotenv/config'
 
 export const NATIVE_SENTINEL_ADDRESS: Address =
@@ -18,19 +19,17 @@ export const NATIVE_SENTINEL_ADDRESS: Address =
 const hook: Address = '0xF7913a68dD7bFF74f0828Ac9d879C6195B370EB8'
 const originModule: Address = '0xD3C6B5539E0d70F58160Cd023DB16853847Ec61E'
 const targetModule: Address = '0xf037B7c95710D600F8a0898b5F3c4d1bE3947A4B'
-const spokepool: Address = '0x7C941271191E0c9A01E360BAE660D21568fc6ca0'
-const weth: Address = '0x47D41c334497f06ab42e60C4036c506D924DDc9c'
 
 export const registry: Record<number, OrchestratorChainConfig> = {
   8453: {
     // Base Mainnet
     rpcUrl: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: base,
-    spokepool: spokepool,
+    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -42,7 +41,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x4200000000000000000000000000000000000006',
       },
     ],
   },
@@ -50,11 +49,11 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Arbitrum Mainnet
     rpcUrl: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: arbitrum,
-    spokepool: spokepool,
+    spokepool: '0x68230F0b9BC5A0F3783715307B545f3a9165010f',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -66,7 +65,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
       },
     ],
   },
@@ -74,11 +73,11 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Optimism Mainnet
     rpcUrl: `https://opt-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: optimism,
-    spokepool: spokepool,
+    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -90,7 +89,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x4200000000000000000000000000000000000006',
       },
     ],
   },
@@ -98,11 +97,11 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Ethereum Sepolia
     rpcUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: sepolia,
-    spokepool: spokepool,
+    spokepool: '0xF69a1048e76B368BA664a9e1e7bB348E3c805DE5',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -114,7 +113,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
       },
     ],
   },
@@ -122,11 +121,11 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Base Sepolia
     rpcUrl: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: baseSepolia,
-    spokepool: spokepool,
+    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -138,7 +137,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x4200000000000000000000000000000000000006',
       },
     ],
   },
@@ -146,11 +145,11 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Arbitrum Sepolia
     rpcUrl: `https://arb-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: arbitrumSepolia,
-    spokepool: spokepool,
+    spokepool: '0x4A53FD5c472f179Eb998D4995FC4240F548a38EC',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x980B62Da83eFf3D4576C647993b0c1D7faf17c73',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -162,18 +161,18 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x980B62Da83eFf3D4576C647993b0c1D7faf17c73',
       },
     ],
   },
   11155420: {
     rpcUrl: `https://opt-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: optimismSepolia,
-    spokepool: spokepool,
+    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
-    weth: weth,
+    weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
         symbol: 'ETH',
@@ -185,7 +184,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
       {
         symbol: 'WETH',
-        address: weth,
+        address: '0x4200000000000000000000000000000000000006',
       },
     ],
   },
