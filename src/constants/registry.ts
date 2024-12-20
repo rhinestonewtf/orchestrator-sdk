@@ -10,15 +10,13 @@ import {
   sepolia,
 } from 'viem/chains'
 import { OrchestratorChainConfig, TokenConfig } from '../types'
-
 import 'dotenv/config'
-
 export const NATIVE_SENTINEL_ADDRESS: Address =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
-const hook: Address = '0xF7913a68dD7bFF74f0828Ac9d879C6195B370EB8'
-const originModule: Address = '0xD3C6B5539E0d70F58160Cd023DB16853847Ec61E'
-const targetModule: Address = '0xf037B7c95710D600F8a0898b5F3c4d1bE3947A4B'
+const hook: Address = '0x6685D99A9Ad74bbF222785A0ec349E99Bab0f214'
+const originModule: Address = '0x9Dc54F793999d5EFEEDf6866f1702c19C86Ba145'
+const targetModule: Address = '0x52F8b6999B47BC23CA1c4A6F597C1a7B6f222e90'
 
 export const registry: Record<number, OrchestratorChainConfig> = {
   8453: {
