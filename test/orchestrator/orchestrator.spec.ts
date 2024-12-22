@@ -18,25 +18,21 @@ const generateRandomAddress = (): Address => {
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const userId = 'd6f64241-a62c-4542-bb23-e78d7e1e0cd6'
-  const accountAddress = '0x9EB7504B7546b1B66e177B364A3566eC10132A40'
+  const userId = '0f3be5e8-6e08-4aa9-9f1c-771371376dff'
+  const accountAddress = '0xE13557f24C6f94B68eEF19Ea2800C086E219F23F'
 
   const execution: Execution = {
-    target: getTokenAddress('USDC', 8453),
-    value: 0n,
-    callData: encodeFunctionData({
-      abi: erc20Abi,
-      functionName: 'transfer',
-      args: ['0xD1dcdD8e6Fe04c338aC3f76f7D7105bEcab74F77', 1n],
-    }),
+    target: '0x7e287a503f0d19b7899c15e80eb18c0ee55ffd12',
+    value: 1n,
+    callData: '0x',
   }
 
   const metaIntent: MetaIntent = {
-    targetChainId: 8453, // Base
+    targetChainId: 42161, // Arb
     tokenTransfers: [
       {
-        tokenAddress: getTokenAddress('USDC', 8453),
-        amount: 2n,
+        tokenAddress: getTokenAddress('ETH', 42161),
+        amount: 10n,
       },
     ],
     targetAccount: accountAddress,
@@ -97,7 +93,7 @@ describe('Orchestrator Service', () => {
 
     console.log(orderBundle)
     console.log(injectedExecutions)
-  })
+  }, 10000)
 
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
     const bundleId = await postMetaIntentWithOwnableValidator(
