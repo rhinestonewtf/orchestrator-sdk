@@ -25,7 +25,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Base Mainnet
     rpcUrl: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: base,
-    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
+    spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -49,7 +49,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Arbitrum Mainnet
     rpcUrl: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: arbitrum,
-    spokepool: '0x68230F0b9BC5A0F3783715307B545f3a9165010f',
+    spokepool: '0x35F36B0ebfFe06Dc29e3d11ae8b335d3Af4D014A',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -73,7 +73,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Optimism Mainnet
     rpcUrl: `https://opt-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: optimism,
-    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
+    spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -97,7 +97,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Ethereum Sepolia
     rpcUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: sepolia,
-    spokepool: '0xF69a1048e76B368BA664a9e1e7bB348E3c805DE5',
+    spokepool: '0x2171A3C4592d5Ae06E0257728aB4E88E575f4cF3',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -121,7 +121,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Base Sepolia
     rpcUrl: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: baseSepolia,
-    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
+    spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -145,7 +145,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
     // Arbitrum Sepolia
     rpcUrl: `https://arb-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: arbitrumSepolia,
-    spokepool: '0x4A53FD5c472f179Eb998D4995FC4240F548a38EC',
+    spokepool: '0xAE6B1f4aA87e0F73DADb10B9CA4F8531BfaFAD19',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -168,7 +168,7 @@ export const registry: Record<number, OrchestratorChainConfig> = {
   11155420: {
     rpcUrl: `https://opt-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     viemChain: optimismSepolia,
-    spokepool: '0x263c36dE3269EFF505e7f3effD67c1E36561e5Cf',
+    spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
@@ -196,7 +196,7 @@ export function getTokenSymbol(tokenAddress: Address, chainId: number): string {
   }
 
   const token = registry[chainId].supportedTokens.find(
-    (token) => token.address === tokenAddress,
+    (token) => token.address.toLowerCase() === tokenAddress.toLowerCase(),
   )
 
   if (!token) {
