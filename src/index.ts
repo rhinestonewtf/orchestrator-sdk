@@ -9,6 +9,9 @@ export * from './common'
 
 export { Orchestrator }
 
-export function getOrchestrator(apiKey: string): Orchestrator {
-  return new Orchestrator(ORCHESTRATOR_URL, apiKey)
+export function getOrchestrator(
+  apiKey: string,
+  orchestratorUrl?: string,
+): Orchestrator {
+  return new Orchestrator(orchestratorUrl ?? ORCHESTRATOR_URL, apiKey)
 }

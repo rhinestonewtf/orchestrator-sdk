@@ -11,8 +11,6 @@ import {
 } from 'viem/chains'
 import { OrchestratorChainConfig, TokenConfig } from '../types'
 
-import 'dotenv/config'
-
 export const NATIVE_SENTINEL_ADDRESS: Address =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
