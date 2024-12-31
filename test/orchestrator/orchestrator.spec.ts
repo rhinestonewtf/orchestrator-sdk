@@ -6,6 +6,7 @@ import { Orchestrator } from '../../src/orchestrator' // Ensure this path is cor
 import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
 import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
+import exp from 'constants'
 
 dotenv.config()
 
@@ -28,10 +29,10 @@ describe('Orchestrator Service', () => {
   }
 
   const metaIntent: MetaIntent = {
-    targetChainId: 42161, // Arb
+    targetChainId: 8453, // Base
     tokenTransfers: [
       {
-        tokenAddress: getTokenAddress('ETH', 42161),
+        tokenAddress: getTokenAddress('USDC', 8453),
         amount: 10n,
       },
     ],
@@ -91,7 +92,7 @@ describe('Orchestrator Service', () => {
     expect(orderBundle).toBeDefined()
     expect(injectedExecutions).toBeDefined()
 
-    console.log(orderBundle)
+    console.log(JSON.stringify(orderBundle))
     console.log(injectedExecutions)
   }, 10000)
 
@@ -104,12 +105,16 @@ describe('Orchestrator Service', () => {
     )
 
     expect(bundleId).toBeDefined()
-    console.log(bundleId)
 
+    // Wait for 2 seconds
+    await new Promise((resolve) => setTimeout(resolve, 5000))
     // Get the bundle status
     const bundleStatus = await orchestrator.getBundleStatus(userId, bundleId)
 
     expect(bundleStatus).toBeDefined()
+
+    expect(bundleStatus.bundleStatus).toBe('FILLED')
+
     console.log(bundleStatus)
   }, 100000)
 })
