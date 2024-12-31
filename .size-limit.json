@@ -2,18 +2,18 @@
   {
     "name": "orchestrator-sdk (esm)",
     "path": "./src/_esm/index.js",
-    "limit": "90 kB",
+    "limit": "50 kB",
     "import": "*"
   },
   {
     "name": "orchestrator-sdk (cjs)",
     "path": "./src/_cjs/index.js",
-    "limit": "190 kB"
+    "limit": "170 kB"
   },
   {
     "name": "orchestrator-sdk (minimal surface - tree-shaking)",
     "path": "./src/_esm/index.js",
-    "limit": "90 kB",
+    "limit": "25 kB",
     "import": "{ getOrchestrator }"
   }
 ]
