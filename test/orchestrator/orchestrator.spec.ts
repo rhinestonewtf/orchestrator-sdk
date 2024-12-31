@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv'
-
 import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
 import { Execution, getOrchestrator, MetaIntent } from '../../src'
 import { Orchestrator } from '../../src/orchestrator' // Ensure this path is correct
@@ -7,7 +5,7 @@ import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
 import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
 import exp from 'constants'
-
+import dotenv from 'dotenv'
 dotenv.config()
 
 // Utility function to generate a random Ethereum address
