@@ -48,6 +48,7 @@ export type MetaIntent = {
     chainId: number
     tokenAddress: Address
   }[]
+  omniLock?: boolean
 }
 
 export type SignedIntent = {
@@ -119,6 +120,16 @@ export type DepositEvent = {
   message: string // bytes
 }
 
+export type SignedTokenUnlock = {
+  chainId: number
+  tokenAddress: Address
+  amount: bigint
+  timestamp: number
+  nonce: bigint
+  signature: Hex
+  verifyingContract: Address
+}
+
 export type Token = {
   symbol: string
   address: Address
@@ -150,6 +161,46 @@ export enum BundleStatus {
 export type BundleIdStatus = {
   bundleStatus: string
   orderStatus: { depositId: bigint; status: string }[]
+}
+
+export enum OrderStatus { // See prisma schema
+  RECEIVED = 'RECEIVED',
+  FILLED = 'FILLED',
+  FINALIZED = 'FINALIZED',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+}
+
+type FinishedBundleStatus =
+  | BundleStatus.COMPLETE
+  | BundleStatus.FILLED
+  | BundleStatus.FINALIZED
+  | BundleStatus.PARTIALLY_CLAIMED
+
+export type GetBundleResult =
+  | InProgressBundleResult
+  | FinishedBundleResult
+  | FailedBundleResult
+
+type OrderResult = {
+  depositId: bigint
+  status: OrderStatus
+}
+
+type InProgressBundleResult = {
+  bundleStatus: BundleStatus.RECEIVED
+  orderStatus: OrderResult[]
+}
+
+type FinishedBundleResult = {
+  bundleStatus: FinishedBundleStatus
+  fillTransactionHash: Hex
+  orderStatus: OrderResult[]
+}
+
+type FailedBundleResult = {
+  bundleStatus: BundleStatus.FAILED | BundleStatus.ERROR
+  orderStatus: OrderResult[]
 }
 
 export type Execution = {
@@ -191,4 +242,5 @@ export type OrchestratorChainConfig = {
 export type TokenConfig = {
   symbol: string
   address: Address
+  decimals: number
 }
