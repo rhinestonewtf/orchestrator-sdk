@@ -138,6 +138,7 @@ export type Token = {
 
 export type UserTokenBalance = {
   tokenName: string
+  tokenDecimals: number
   balance: string
   tokenChainBalance: {
     chainId: number
