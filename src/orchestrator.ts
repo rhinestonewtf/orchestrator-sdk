@@ -1,6 +1,7 @@
 import { Address, Hex } from 'viem'
 import {
   BundleIdStatus,
+  ChainAccount,
   Execution,
   MetaIntent,
   SignedIntent,
@@ -43,6 +44,28 @@ export class Orchestrator {
     }
 
     throw new Error('Failed to create user account')
+  }
+
+  async updateUserAccount(
+    userId: string,
+    chainAccounts: ChainAccount[],
+  ): Promise<string> {
+    try {
+      const response = await axios.post(
+        `${this.serverUrl}/users/${userId}/chain_accounts`,
+        {
+          chainAccounts,
+        },
+        {
+          headers: {
+            'x-api-key': this.apiKey,
+          },
+        },
+      )
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
   }
 
   async getUserId(
@@ -103,12 +126,12 @@ export class Orchestrator {
         orderBundle: response.data.orderBundle,
         injectedExecutions: response.data.injectedExecutions,
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof Error) {
         console.log(error)
       }
+      throw new Error(error)
     }
-    throw new Error('Failed to get order path')
   }
 
   async postSignedOrderBundle(
