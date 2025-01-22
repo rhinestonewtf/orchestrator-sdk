@@ -1,10 +1,9 @@
-import { Address, encodeFunctionData, erc20Abi, Hex } from 'viem'
+import { Address, Hex } from 'viem'
 import { Execution, getOrchestrator, MetaIntent } from '../../src'
 import { Orchestrator } from '../../src/orchestrator' // Ensure this path is correct
 import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
 import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
-import exp from 'constants'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -54,11 +53,21 @@ describe('Orchestrator Service', () => {
       generateRandomAddress(),
       [8453],
     )
-
     expect(userId).toBeDefined()
+  }, 100_000)
 
-    console.log(userId)
-  })
+  it('should add an account to the user account cluster', async () => {
+    const userId = await orchestrator.createUserAccount(
+      generateRandomAddress(),
+      [8453],
+    )
+
+    const updatedAccount = await orchestrator.updateUserAccount(userId, [
+      { accountAddress: accountAddress, chainId: 42161 },
+    ])
+
+    expect(updatedAccount).toBeDefined()
+  }, 100_000)
 
   it('should get the user ID for an account address with chainId', async () => {
     const userIdResponse = await orchestrator.getUserId(accountAddress, 8453)
@@ -66,20 +75,20 @@ describe('Orchestrator Service', () => {
     expect(userIdResponse).toBeDefined()
     expect(userIdResponse.length).toBe(1)
     expect(userIdResponse[0].chainId).toBe(8453)
-  })
+  }, 100_000)
 
   it('should get the user ID for an account address without chainId', async () => {
     const userIdResponse = await orchestrator.getUserId(accountAddress)
 
     expect(userIdResponse).toBeDefined()
     expect(userIdResponse.length).toBeGreaterThan(1)
-  })
+  }, 100_000)
 
   it('should get the portfolio of a user', async () => {
     const portfolio = await orchestrator.getPortfolio(userId)
 
     expect(portfolio).toBeDefined()
-  }, 100000)
+  }, 100_000)
 
   it('should get the order path for a user', async () => {
     const { orderBundle, injectedExecutions } = await orchestrator.getOrderPath(
@@ -92,7 +101,7 @@ describe('Orchestrator Service', () => {
 
     console.log(JSON.stringify(orderBundle))
     console.log(injectedExecutions)
-  }, 10000)
+  }, 100_000)
 
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
     const bundleId = await postMetaIntentWithOwnableValidator(
@@ -114,5 +123,5 @@ describe('Orchestrator Service', () => {
     expect(bundleStatus.bundleStatus).toBe('FILLED')
 
     console.log(bundleStatus)
-  }, 100000)
+  }, 100_000)
 })

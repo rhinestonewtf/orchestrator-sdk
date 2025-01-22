@@ -245,3 +245,8 @@ export type TokenConfig = {
   address: Address
   decimals: number
 }
+
+export type ChainAccount = {
+  chainId: number
+  accountAddress: Address
+}
