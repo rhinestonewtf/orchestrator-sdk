@@ -1,4 +1,4 @@
-import { Address, Hex } from 'viem'
+import { Address } from 'viem'
 import {
   BundleIdStatus,
   ChainAccount,
@@ -35,6 +35,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -59,6 +60,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -76,6 +78,7 @@ export class Orchestrator {
       const response = await axios.get(`${this.serverUrl}/users`, {
         headers: {
           'x-api-key': this.apiKey,
+          'Accept-Encoding': 'gzip',
         },
         params: {
           accountAddress: accountAddress,
@@ -96,6 +99,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -119,6 +123,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -147,6 +152,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -170,6 +176,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
@@ -198,6 +205,7 @@ export class Orchestrator {
         {
           headers: {
             'x-api-key': this.apiKey,
+            'Accept-Encoding': 'gzip',
           },
         },
       )
