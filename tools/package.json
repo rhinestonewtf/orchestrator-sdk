@@ -1,0 +1,21 @@
+{
+  "name": "@rhinestone/orchestrator-cli",
+  "version": "0.1.11",
+  "description": "Command line interface for interacting with the Rhinestone Orchestrator",
+  "author": {
+    "name": "Rhinestone",
+    "url": "https://rhinestone.wtf"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "bin": {
+    "orchestrator": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p ../tsconfig.build.json",
+    "cli": "tsx ./app.ts"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  }
+}

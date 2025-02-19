@@ -35,7 +35,6 @@ describe('Orchestrator Service', () => {
     ],
     targetAccount: accountAddress,
     targetExecutions: [execution],
-    userOp: getEmptyUserOp(),
   }
 
   beforeAll(async () => {
@@ -48,44 +47,8 @@ describe('Orchestrator Service', () => {
     // cleanup
   })
 
-  it('should create a new user account', async () => {
-    const userId = await orchestrator.createUserAccount(
-      generateRandomAddress(),
-      [8453],
-    )
-    expect(userId).toBeDefined()
-  }, 100_000)
-
-  it('should add an account to the user account cluster', async () => {
-    const userId = await orchestrator.createUserAccount(
-      generateRandomAddress(),
-      [8453],
-    )
-
-    const updatedAccount = await orchestrator.updateUserAccount(userId, [
-      { accountAddress: accountAddress, chainId: 42161 },
-    ])
-
-    expect(updatedAccount).toBeDefined()
-  }, 100_000)
-
-  it('should get the user ID for an account address with chainId', async () => {
-    const userIdResponse = await orchestrator.getUserId(accountAddress, 8453)
-
-    expect(userIdResponse).toBeDefined()
-    expect(userIdResponse.length).toBe(1)
-    expect(userIdResponse[0].chainId).toBe(8453)
-  }, 100_000)
-
-  it('should get the user ID for an account address without chainId', async () => {
-    const userIdResponse = await orchestrator.getUserId(accountAddress)
-
-    expect(userIdResponse).toBeDefined()
-    expect(userIdResponse.length).toBeGreaterThan(1)
-  }, 100_000)
-
   it('should get the portfolio of a user', async () => {
-    const portfolio = await orchestrator.getPortfolio(userId)
+    const portfolio = await orchestrator.getPortfolio(accountAddress)
 
     expect(portfolio).toBeDefined()
   }, 100_000)
@@ -93,7 +56,7 @@ describe('Orchestrator Service', () => {
   it('should get the order path for a user', async () => {
     const { orderBundle, injectedExecutions } = await orchestrator.getOrderPath(
       metaIntent,
-      userId,
+      accountAddress,
     )
 
     expect(orderBundle).toBeDefined()
@@ -113,10 +76,10 @@ describe('Orchestrator Service', () => {
 
     expect(bundleId).toBeDefined()
 
-    // Wait for 2 seconds
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+    // Wait for 5 seconds
+    await new Promise((resolve) => setTimeout(resolve, 5_000))
     // Get the bundle status
-    const bundleStatus = await orchestrator.getBundleStatus(userId, bundleId)
+    const bundleStatus = await orchestrator.getBundleStatus(bundleId)
 
     expect(bundleStatus).toBeDefined()
 

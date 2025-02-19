@@ -6,13 +6,8 @@ import {
   zeroHash,
 } from 'viem'
 import {
-  AcrossTransfer,
   Execution,
   PackedUserOperation,
-  Settlement,
-  SignedExecutions,
-  SignedIntent,
-  SmartDigest,
   TokenTransfer,
 } from '../types'
 import { typehashTypes } from '../constants'
@@ -63,13 +58,13 @@ export const hashTokenTransfer = (tokenTransfer: TokenTransfer) => {
     ]),
   )
 }
-export const hashAcrossTransfers = (acrossTransfers: AcrossTransfer[]) => {
+export const hashAcrossTransfers = (acrossTransfers: any[]) => {
   return keccak256(
     encodePacked(['bytes32[]'], [acrossTransfers.map(hashAcrossTransfer)]),
   )
 }
 
-export const hashSettlement = (settlement: Settlement) => {
+export const hashSettlement = (settlement: any) => {
   return keccak256(
     encodeAbiParameters(typehashTypes.Settlement, [
       SETTLEMENT_TYPEHASH,
@@ -83,7 +78,7 @@ export const hashSettlement = (settlement: Settlement) => {
   )
 }
 
-export const hashAcrossTransfer = (acrossTransfer: AcrossTransfer) => {
+export const hashAcrossTransfer = (acrossTransfer: any) => {
   return keccak256(
     encodeAbiParameters(typehashTypes.AcrossTransfer, [
       ACROSS_TRANSFER_TYPEHASH,
@@ -109,7 +104,7 @@ export const hashExecution = (execution: Execution) => {
     ]),
   )
 }
-export const hashSignedExecutions = (signedExecutions: SignedExecutions) => {
+export const hashSignedExecutions = (signedExecutions: any) => {
   return keccak256(
     encodeAbiParameters(typehashTypes.SignedExecutions, [
       SIGNED_EXECUTIONS_TYPEHASH,
@@ -143,7 +138,7 @@ export const hashPackedUserOperation = (
 
 export const getSmartDigest = (
   digestIndex: bigint,
-  orderBundle: SignedIntent,
+  orderBundle: any,
 ) => {
   const userOpDigest = hashPackedUserOperation(orderBundle.userOp)
 
@@ -151,12 +146,12 @@ export const getSmartDigest = (
     executions: orderBundle.targetChainExecutions.executions,
   })
 
-  const smartDigest: SmartDigest = {
+  const smartDigest: any = {
     userOpDigest: userOpDigest,
     executionDigest: executionDigest,
     acrossTransferDigests: {
       digestIndex: digestIndex,
-      chainDataDigests: orderBundle.acrossTransfers.map((acrossTransfer) =>
+      chainDataDigests: orderBundle.acrossTransfers.map((acrossTransfer: any) =>
         hashAcrossTransfer(acrossTransfer),
       ),
     },

@@ -1,11 +1,9 @@
-import { Address, Hex } from 'viem'
+import { Address, concat } from 'viem'
 import {
-  BundleIdStatus,
-  ChainAccount,
-  Execution,
+  GetBundleResult,
   MetaIntent,
-  SignedIntent,
-  SignedOrderBundle,
+  SignedMultiChainCompact,
+  UserTokenBalance,
 } from './types'
 import { convertBigIntFields } from './utils'
 import axios from 'axios'
@@ -21,98 +19,46 @@ export class Orchestrator {
     this.apiKey = apiKey
   }
 
-  async createUserAccount(
-    accountAddress: Address,
-    chainIds: number[],
-  ): Promise<string> {
-    try {
-      const response = await axios.post(
-        `${this.serverUrl}/users`,
-        {
-          accountAddress: accountAddress,
-          chainIds: chainIds,
-        },
-        {
-          headers: {
-            'x-api-key': this.apiKey,
-          },
-        },
-      )
-      return response.data.userId
-    } catch (error) {
-      console.error(error)
-    }
-
-    throw new Error('Failed to create user account')
-  }
-
-  async updateUserAccount(
-    userId: string,
-    chainAccounts: ChainAccount[],
-  ): Promise<string> {
-    try {
-      const response = await axios.post(
-        `${this.serverUrl}/users/${userId}/chain_accounts`,
-        {
-          chainAccounts,
-        },
-        {
-          headers: {
-            'x-api-key': this.apiKey,
-          },
-        },
-      )
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
-
-  async getUserId(
-    accountAddress: Address,
-    chainId?: number,
-  ): Promise<{ userId: string; chainId: number }[]> {
-    try {
-      const response = await axios.get(`${this.serverUrl}/users`, {
-        headers: {
-          'x-api-key': this.apiKey,
-        },
-        params: {
-          accountAddress: accountAddress,
-          chainId: chainId ? chainId : undefined,
-        },
-      })
-      return response.data
-    } catch (error) {
-      console.log(error)
-    }
-    throw new Error('Failed to get user')
-  }
-
-  async getPortfolio(userId: string) {
+  async getPortfolio(
+    userAddress: Address,
+    filter?: {
+      chainIds?: number[]
+      tokens?: {
+        [chainId: number]: Address[]
+      }
+    },
+  ): Promise<UserTokenBalance[]> {
     try {
       const response = await axios.get(
-        `${this.serverUrl}/users/${userId}/portfolio`,
+        `${this.serverUrl}/accounts/${userAddress}/portfolio`,
         {
+          params: {
+            chainIds: filter?.chainIds,
+            tokens: filter?.tokens
+              ? Object.entries(filter.tokens)
+                  .map(([chainId, tokens]) =>
+                    tokens.map((token) => `${chainId}:${token}`),
+                  )
+                  .reduce(concat, [])
+              : undefined,
+          },
           headers: {
             'x-api-key': this.apiKey,
           },
         },
       )
-      return response.data
+      return response.data.portfolio
     } catch (error) {
-      console.log(error)
+      this.parseError(error)
+      throw new Error('Failed to get portfolio')
     }
-    throw new Error('Failed to get portfolio')
   }
 
-  async getOrderPath(
-    intent: MetaIntent,
-    userId: string,
-  ): Promise<{ orderBundle: SignedIntent; injectedExecutions: Execution[] }> {
+  async getOrderPath(intent: MetaIntent, userAddress: Address): Promise<any> {
+    //Promise<{ orderBundle: SignedIntent; injectedExecutions: Execution[] }> {
     try {
       const response = await axios.post(
-        `${this.serverUrl}/users/${userId}/bundles/path`,
+        `${this.serverUrl}/accounts/${userAddress}/bundles/path`,
         {
           ...convertBigIntFields(intent),
         },
@@ -127,20 +73,17 @@ export class Orchestrator {
         injectedExecutions: response.data.injectedExecutions,
       }
     } catch (error: any) {
-      if (error instanceof Error) {
-        console.log(error)
-      }
+      this.parseError(error)
       throw new Error(error)
     }
   }
 
   async postSignedOrderBundle(
-    signedOrderBundle: SignedOrderBundle,
-    userId: string,
+    signedOrderBundle: SignedMultiChainCompact,
   ): Promise<string> {
     try {
       const response = await axios.post(
-        `${this.serverUrl}/users/${userId}/bundles`,
+        `${this.serverUrl}/bundles`,
         {
           signedOrderBundle: signedOrderBundle,
         },
@@ -152,21 +95,15 @@ export class Orchestrator {
       )
       return response.data.bundleId
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error)
-      }
+      this.parseError(error)
+      throw new Error('Failed to post order bundle')
     }
-
-    throw new Error('Failed to post order bundle')
   }
 
-  async getBundleStatus(
-    userId: string,
-    bundleId: string,
-  ): Promise<BundleIdStatus> {
+  async getBundleStatus(bundleId: string): Promise<GetBundleResult> {
     try {
       const response = await axios.get(
-        `${this.serverUrl}/users/${userId}/bundles/${bundleId}`,
+        `${this.serverUrl}/bundles/${bundleId}`,
         {
           headers: {
             'x-api-key': this.apiKey,
@@ -185,26 +122,58 @@ export class Orchestrator {
 
       return response.data
     } catch (error) {
-      console.log(error)
+      this.parseError(error)
+      throw new Error('Failed to get bundle status')
     }
-    throw new Error('Failed to get bundle status')
   }
 
-  async getSolverClaimPayload(bundleId: string) {
-    try {
-      const response = await axios.put(
-        `${this.serverUrl}/solvers/${bundleId}`,
-        {},
-        {
-          headers: {
-            'x-api-key': this.apiKey,
-          },
-        },
-      )
-      return response.data
-    } catch (error) {
-      console.log(error)
+  private parseError(error: any) {
+    if (error.response) {
+      let errorType: string | undefined
+      if (error.response.status) {
+        switch (error.response.status) {
+          case 400:
+            errorType = 'Bad Request'
+            break
+          case 401:
+            errorType = 'Unauthorized'
+            break
+          case 403:
+            errorType = 'Forbidden'
+            break
+          case 404:
+            errorType = 'Not Found'
+            break
+          case 409:
+            errorType = 'Conflict'
+            break
+          case 422:
+            errorType = 'Unprocessable Entity'
+            break
+          case 500:
+            errorType = 'Internal Server Error'
+            break
+          default:
+            errorType = 'Unknown'
+        }
+      }
+      if (error.response.data) {
+        const { errors } = error.response.data
+        for (const err of errors) {
+          let errorMessage = `Rhinestone Error: ${err.message}`
+          if (errorType) {
+            errorMessage += ` (${errorType})`
+          }
+          console.error(errorMessage)
+          if (err.context) {
+            console.error(
+              `Context: ${JSON.stringify(err.context, undefined, 4)}`,
+            )
+          }
+        }
+      } else {
+        console.error(error)
+      }
     }
-    throw new Error('Failed to get solver claim payload')
   }
 }

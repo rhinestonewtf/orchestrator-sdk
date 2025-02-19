@@ -1,19 +1,114 @@
 import { Address, Chain, Hex } from 'viem'
+import type { UserOperation } from 'viem/account-abstraction'
 
-export type ChainAccountChallenge = {
-  challengeRequired: boolean
-  chainId: number
-  account: Address
-  challenge: string
+// TODO: these types need to be updated to the latest contract structs
+export type MultiChainCompact = {
+  sponsor: Address
+  nonce: bigint
+  expires: bigint
+  segments: Segment[]
 }
 
-export type Settlement = {
-  orchestrator: Address
+export type Segment = {
+  arbiter: Address
+  chainId: bigint
+  idsAndAmounts: [bigint, bigint][]
+  witness: Witness
+}
+
+export type Witness = {
   recipient: Address
-  settlementContract: Address
-  targetChainId: number
+  tokenOut: [bigint, bigint][]
+  depositId: bigint
+  targetChain: bigint
   fillDeadline: number
-  lastDepositId: bigint
+  execs: XchainExec[]
+  userOpHash: Hex
+}
+
+export type XchainExec = {
+  target: Address
+  value: bigint
+  callData: Hex
+}
+
+export type BatchCompact = {
+  arbiter: Address
+  sponsor: Address
+  nonce: bigint
+  expires: bigint
+  idsAndAmounts: [bigint, bigint][]
+  witness: Witness
+}
+
+export type QualificationWitness = {
+  claimHash: Hex
+  targetChainSignatureHash: Hex
+  targetWETHAddress: Address
+}
+
+export type ChainNotarization = {
+  originAccount: Address
+  originModule: Address
+  notarizedChainId: bigint
+  nonce: bigint
+  expires: bigint
+  notarizedWitness: Hex
+  idsAndAmountsTokenInHash: Hex
+}
+
+export type TargetChainAttributes = {
+  recipient: Address
+  tokenOut: [bigint, bigint][]
+  targetWETHAddress: Address
+  depositId: bigint
+  fillDeadline: number
+}
+
+export type MultiOriginMessage = {
+  notarization: ChainNotarization
+  targetChain: TargetChainAttributes
+  otherSegments: Hex[]
+  executions: Execution[]
+  userSig: Hex
+}
+
+export type SingleOriginMessage = {
+  notarization: ChainNotarization
+  targetChain: TargetChainAttributes
+  executions: Execution[]
+  userSig: Hex
+}
+
+export type UserOperationMessage = {
+  targetChain: TargetChainAttributes
+  userOp: PackedUserOperation
+  nonce: bigint
+}
+
+export type Execution = {
+  target: Address
+  value: bigint
+  callData: Hex
+}
+
+export type IntentFillPayload = {
+  segments: SegmentData[]
+  message: Hex
+  orchestratorSig: Hex
+}
+
+export type SegmentData = {
+  tokenIn: [bigint, bigint][]
+  tokenOut: [bigint, bigint][]
+  originWETHAddress: Address
+  originChainId: bigint
+  baseDepositId: bigint
+}
+
+export type SignedMultiChainCompact = MultiChainCompact & {
+  originSignatures: Hex[]
+  targetSignature: Hex
 }
 
 export type TokenTransfer = {
@@ -21,89 +116,51 @@ export type TokenTransfer = {
   amount: bigint
 }
 
-export type AcrossTransfer = {
-  originModule: Address
-  originAccount: Address
-  targetAccount: Address
-  originChainId: number
-  initiateDeadline: number
-  maxFee: bigint
-  depositId: bigint
-  originTransfer: TokenTransfer
-  targetTransfer: TokenTransfer
+type WithUserOp = {
+  userOp: UserOperation
+  targetExecutions?: never
 }
 
-export type SignedExecutions = {
-  executions: Execution[]
+type WithExecutions = {
+  userOp?: never
+  targetExecutions: Execution[]
 }
 
-export type MetaIntent = {
+type WithoutOperation = {
+  userOp?: never
+  targetExecutions?: never
+}
+
+type MetaIntentBase = {
   targetChainId: number
   tokenTransfers: TokenTransfer[]
   targetAccount: Address
-  targetExecutions: Execution[]
-  userOp: PackedUserOperation
   accountAccessList?: {
-    accountAddress: Address
     chainId: number
     tokenAddress: Address
   }[]
   omniLock?: boolean
 }
 
-export type SignedIntent = {
-  settlement: Settlement
-  acrossTransfers: AcrossTransfer[]
-  targetChainExecutions: SignedExecutions
-  userOp: PackedUserOperation
-}
+export type MetaIntentEmpty = MetaIntentBase & WithoutOperation
+export type MetaIntentWithUserOp = MetaIntentBase & WithUserOp
+export type MetaIntentWithExecutions = MetaIntentBase & WithExecutions
 
-export type SignedOrderBundle = {
-  settlement: Settlement
-  acrossTransfers: (AcrossTransfer & { userSignature: Hex })[]
-  targetChainExecutions: SignedExecutions
-  targetExecutionSignature: Hex
-  userOp: PackedUserOperation
-}
-
-export type SignedIntentWithAuctionFee = {
-  auctionFee: bigint
-  signedIntent: SignedIntent
-}
-
-export type IndexChainDigest = {
-  digestIndex: bigint
-  chainDataDigests: Hex[]
-}
-
-export type SmartDigest = {
-  acrossTransferDigests: IndexChainDigest
-  executionDigest: Hex
-  userOpDigest: Hex
-}
-
-export type OriginOrder = {
-  settlement: Settlement
-  acrossTransfer: AcrossTransfer
-  smartDigests: SmartDigest
-  userSig: Hex
-}
-
-export type OriginModulePayload = {
-  order: OriginOrder
-  auctionFee: bigint
-  orchestratorSignature: Hex
-  acrossMessagePayload: Hex
-}
+export type MetaIntent =
+  | MetaIntentEmpty
+  | MetaIntentWithUserOp
+  | MetaIntentWithExecutions
 
 export type BundleEvent = {
   bundleId: string
   type: string
+  targetFillPayload: Execution
   standardDepositEvents: DepositEvent[]
   executionDepositEvent: DepositEvent
 }
 
 export type DepositEvent = {
+  originClaimPayload: Execution
   inputToken: Address // address
   outputToken: Address // address
   inputAmount: bigint // uint256
@@ -117,7 +174,7 @@ export type DepositEvent = {
   depositor: Address // address (indexed)
   recipient: Address // address
   exclusiveRelayer: Address // address
-  message: string // bytes
+  message: Hex // bytes
 }
 
 export type SignedTokenUnlock = {
@@ -153,15 +210,10 @@ export enum BundleStatus {
   FILLED = 'FILLED',
   FINALIZED = 'FINALIZED',
   PARTIALLY_CLAIMED = 'PARTIALLY_CLAIMED',
-  COMPLETE = 'COMPLETE',
+  COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
   CLAIM_FAILED = 'CLAIM_FAILED',
   ERROR = 'ERROR',
-}
-
-export type BundleIdStatus = {
-  bundleStatus: string
-  orderStatus: { depositId: bigint; status: string }[]
 }
 
 export enum OrderStatus { // See prisma schema
@@ -173,7 +225,7 @@ export enum OrderStatus { // See prisma schema
 }
 
 type FinishedBundleStatus =
-  | BundleStatus.COMPLETE
+  | BundleStatus.COMPLETED
   | BundleStatus.FILLED
   | BundleStatus.FINALIZED
   | BundleStatus.PARTIALLY_CLAIMED
@@ -204,12 +256,6 @@ type FailedBundleResult = {
   orderStatus: OrderResult[]
 }
 
-export type Execution = {
-  target: Address
-  value: bigint
-  callData: Hex
-}
-
 export type PackedUserOperation = {
   sender: Address
   nonce: bigint
@@ -220,13 +266,6 @@ export type PackedUserOperation = {
   gasFees: Hex
   paymasterAndData: Hex
   signature: Hex
-}
-
-export type Order = {
-  settlement: Settlement
-  acrossTransfer: AcrossTransfer
-  smartDigests: SmartDigest
-  userSig: Hex
 }
 
 export type OrchestratorChainConfig = {
@@ -244,9 +283,4 @@ export type TokenConfig = {
   symbol: string
   address: Address
   decimals: number
-}
-
-export type ChainAccount = {
-  chainId: number
-  accountAddress: Address
 }
