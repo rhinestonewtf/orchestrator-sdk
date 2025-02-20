@@ -5,6 +5,7 @@ import {
   SignedMultiChainCompact,
   UserTokenBalance,
 } from './types'
+import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
 import axios from 'axios'
 
@@ -80,12 +81,14 @@ export class Orchestrator {
 
   async postSignedOrderBundle(
     signedOrderBundle: SignedMultiChainCompact,
+    userOp?: UserOperation
   ): Promise<string> {
     try {
       const response = await axios.post(
         `${this.serverUrl}/bundles`,
         {
-          signedOrderBundle: signedOrderBundle,
+          signedOrderBundle: convertBigIntFields(signedOrderBundle),
+          userOp: userOp ? convertBigIntFields(userOp) : undefined,
         },
         {
           headers: {

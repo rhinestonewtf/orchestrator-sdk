@@ -1,4 +1,4 @@
-import { Address, Chain, Hex } from 'viem'
+import { Address, Hex } from 'viem'
 import type { UserOperation } from 'viem/account-abstraction'
 
 // TODO: these types need to be updated to the latest contract structs
@@ -269,12 +269,11 @@ export type PackedUserOperation = {
 }
 
 export type OrchestratorChainConfig = {
-  rpcUrl: string
-  viemChain: Chain
   spokepool: Address
   hook: Address
   originModule: Address
   targetModule: Address
+  sameChainModule: Address
   weth: Address
   supportedTokens: TokenConfig[]
 }

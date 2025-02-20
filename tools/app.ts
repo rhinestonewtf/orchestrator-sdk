@@ -1,6 +1,10 @@
-import { UserTokenBalance } from '../src'
-import { MetaIntent } from '../src'
-import { getOrchestrator, Orchestrator } from '../src'
+import {
+  getOrchestrator,
+  Orchestrator,
+  MetaIntent,
+  UserTokenBalance,
+} from '../src'
+import { Address } from 'viem'
 import { Command, Option } from 'commander'
 
 const orchestrator: Orchestrator = getOrchestrator(
@@ -94,46 +98,14 @@ program
       'Chain ID and token address pairs to pull funds from',
     ),
   )
-  .action(
-    async (
+  .action(async (userAddress, targetChain, transfers, options) => {
+    const intent = parseBundleArgs(userAddress, targetChain, transfers, options)
+    const { orderBundle, injectedExecutions } = await orchestrator.getOrderPath(
+      intent,
       userAddress,
-      targetChain,
-      transfers,
-      { targetAccount, executions, userOp, accessList },
-    ) => {
-      targetAccount ??= userAddress
-      let accountAccessList
-      if (accessList) {
-        accountAccessList = accessList.map((access: string) => {
-          const [chainId, tokenAddress] = access.split(':')
-          return { chainId: parseInt(chainId), tokenAddress }
-        })
-      }
-      const intent: MetaIntent = {
-        targetChainId: parseInt(targetChain),
-        tokenTransfers: transfers.map((transfer: string) => {
-          const [tokenAddress, amount] = transfer.split(':')
-          return { tokenAddress, amount: BigInt(amount) }
-        }),
-        targetAccount,
-        targetExecutions: [],
-        accountAccessList,
-      }
-
-      if (executions) {
-        intent.targetExecutions = executions.map((execution: string) => {
-          const [target, value, callData] = execution.split(':')
-          return { target, value: BigInt(value), callData }
-        })
-      } else if (userOp) {
-        intent.userOp = JSON.parse(userOp)
-      }
-
-      const { orderBundle, injectedExecutions } =
-        await orchestrator.getOrderPath(intent, userAddress)
-      console.log(JSON.stringify(orderBundle))
-    },
-  )
+    )
+    console.log(JSON.stringify(orderBundle, null, 2))
+  })
 
 program
   .command('status')
@@ -143,5 +115,42 @@ program
     const status = await orchestrator.getBundleStatus(bundleId)
     console.log(status)
   })
+
+function parseBundleArgs(
+  userAddress: string,
+  targetChain: string,
+  transfers: string[],
+  { targetAccount, executions, userOp, accessList },
+): MetaIntent {
+  targetAccount ??= userAddress
+  let accountAccessList
+  if (accessList) {
+    accountAccessList = accessList.map((access: string) => {
+      const [chainId, tokenAddress] = access.split(':')
+      return { chainId: parseInt(chainId), tokenAddress }
+    })
+  }
+  const intent: MetaIntent = {
+    targetChainId: parseInt(targetChain),
+    tokenTransfers: transfers.map((transfer: string) => {
+      const [tokenAddress, amount] = transfer.split(':')
+      return { tokenAddress: tokenAddress as Address, amount: BigInt(amount) }
+    }),
+    targetAccount,
+    targetExecutions: [],
+    accountAccessList,
+  }
+
+  if (executions) {
+    intent.targetExecutions = executions.map((execution: string) => {
+      const [target, value, callData] = execution.split(':')
+      return { target, value: BigInt(value), callData }
+    })
+  } else if (userOp) {
+    intent.userOp = JSON.parse(userOp)
+  }
+
+  return intent
+}
 
 program.parse()
