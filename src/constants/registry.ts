@@ -245,7 +245,7 @@ export function getTokenSymbol(tokenAddress: Address, chainId: number): string {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  const token = registry[chainId].supportedTokens.find(
+  const token = registry[chainId as SupportedChain].supportedTokens.find(
     (token) => token.address.toLowerCase() === tokenAddress.toLowerCase(),
   )
 
@@ -261,7 +261,7 @@ export function getTokenAddress(tokenSymbol: string, chainId: number): Address {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  const token = registry[chainId].supportedTokens.find(
+  const token = registry[chainId as SupportedChain].supportedTokens.find(
     (token) => token.symbol === tokenSymbol,
   )
 
@@ -285,7 +285,7 @@ export function getSupportedTokens(chainId: number): TokenConfig[] {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].supportedTokens
+  return registry[chainId as SupportedChain].supportedTokens
 }
 
 export const getSpokePoolAddress = (chainId: number): Address => {
@@ -293,7 +293,7 @@ export const getSpokePoolAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].spokepool
+  return registry[chainId as SupportedChain].spokepool
 }
 
 export const getRhinestoneSpokePoolAddress = (chainId: number): Address => {
@@ -309,7 +309,7 @@ export const getHookAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].hook
+  return registry[chainId as SupportedChain].hook
 }
 
 export const getOriginModuleAddress = (chainId: number): Address => {
@@ -317,7 +317,7 @@ export const getOriginModuleAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].originModule
+  return registry[chainId as SupportedChain].originModule
 }
 
 export const getTargetModuleAddress = (chainId: number): Address => {
@@ -325,7 +325,7 @@ export const getTargetModuleAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].targetModule
+  return registry[chainId as SupportedChain].targetModule
 }
 
 export const getSameChainModuleAddress = (chainId: number): Address => {
@@ -333,7 +333,7 @@ export const getSameChainModuleAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].sameChainModule
+  return registry[chainId as SupportedChain].sameChainModule
 }
 
 export const getChainConfig = (chainId: number): OrchestratorChainConfig => {
@@ -341,5 +341,5 @@ export const getChainConfig = (chainId: number): OrchestratorChainConfig => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId]
+  return registry[chainId as SupportedChain]
 }

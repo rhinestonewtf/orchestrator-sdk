@@ -1,7 +1,6 @@
 import { Address, Hex } from 'viem'
 import { Execution, getOrchestrator, MetaIntent } from '../../src'
 import { Orchestrator } from '../../src/orchestrator' // Ensure this path is correct
-import { getEmptyUserOp } from '../../src/utils/userOp'
 import { getTokenAddress } from '../../src/constants'
 import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
 import dotenv from 'dotenv'
@@ -16,7 +15,6 @@ const generateRandomAddress = (): Address => {
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const userId = '0f3be5e8-6e08-4aa9-9f1c-771371376dff'
   const accountAddress = '0xE13557f24C6f94B68eEF19Ea2800C086E219F23F'
 
   const execution: Execution = {
@@ -69,7 +67,7 @@ describe('Orchestrator Service', () => {
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
     const bundleId = await postMetaIntentWithOwnableValidator(
       metaIntent,
-      userId,
+      accountAddress,
       process.env.BUNDLE_GENERATOR_PRIVATE_KEY! as Hex,
       orchestrator,
     )

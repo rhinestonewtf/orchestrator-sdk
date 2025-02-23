@@ -24,12 +24,13 @@ export type Witness = {
   fillDeadline: number
   execs: XchainExec[]
   userOpHash: Hex
+  maxFeeBps: number
 }
 
 export type XchainExec = {
-  target: Address
+  to: Address
   value: bigint
-  callData: Hex
+  data: Hex
 }
 
 export type BatchCompact = {
@@ -85,6 +86,8 @@ export type UserOperationMessage = {
   userOp: PackedUserOperation
   nonce: bigint
 }
+
+export type TokenArrays6909 = readonly (readonly [bigint, bigint])[]
 
 export type Execution = {
   target: Address

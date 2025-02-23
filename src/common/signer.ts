@@ -1,32 +1,26 @@
-import { hashTypedData, Hex } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
-// import { SignedIntent, SignedOrderBundle } from '../types'
-import { smartContractTypes } from '../constants'
-import { getOrderDomain } from '../utils'
+import { Hex } from 'viem'
+import { getHookAddress } from '../constants'
+import { getCompactDomainSeparator } from '../utils'
+import { MultiChainCompact, SignedMultiChainCompact } from '../types'
+import { hashMultiChainCompactWithDomainSeparator } from './hash'
 
 export async function getOrderBundleHash(
-  orderBundle: any, //SignedIntent,
+  orderBundle: MultiChainCompact,
 ): Promise<Hex> {
-  return hashTypedData({
-    domain: getOrderDomain(),
-    types: smartContractTypes,
-    primaryType: 'SignedIntent',
-    message: orderBundle,
-  })
+  const notarizedChainId = Number(orderBundle.segments[0].chainId)
+  return hashMultiChainCompactWithDomainSeparator(
+    orderBundle,
+    getCompactDomainSeparator(notarizedChainId, getHookAddress(notarizedChainId)),
+  )
 }
 
 export async function getSignedOrderBundle(
-  orderBundle: any, // SignedIntent,
+  orderBundle: MultiChainCompact,
   orderBundleSignature: Hex,
-): Promise<any> { // Promise<SignedOrderBundle> {
+): Promise<SignedMultiChainCompact> {
   return {
-    settlement: orderBundle.settlement,
-    acrossTransfers: orderBundle.acrossTransfers.map((transfer: any) => ({
-      ...transfer,
-      userSignature: orderBundleSignature,
-    })),
-    targetChainExecutions: orderBundle.targetChainExecutions,
-    targetExecutionSignature: orderBundleSignature,
-    userOp: orderBundle.userOp,
+    ...orderBundle,
+    originSignatures: Array(orderBundle.segments.length).fill(orderBundleSignature),
+    targetSignature: orderBundleSignature,
   }
 }
