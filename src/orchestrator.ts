@@ -1,7 +1,9 @@
 import { Address, concat } from 'viem'
 import {
+  Execution,
   GetBundleResult,
   MetaIntent,
+  MultiChainCompact,
   SignedMultiChainCompact,
   UserTokenBalance,
 } from './types'
@@ -55,8 +57,13 @@ export class Orchestrator {
     }
   }
 
-  async getOrderPath(intent: MetaIntent, userAddress: Address): Promise<any> {
-    //Promise<{ orderBundle: SignedIntent; injectedExecutions: Execution[] }> {
+  async getOrderPath(
+    intent: MetaIntent,
+    userAddress: Address,
+  ): Promise<{
+    orderBundle: MultiChainCompact
+    injectedExecutions: Execution[]
+  }> {
     try {
       const response = await axios.post(
         `${this.serverUrl}/accounts/${userAddress}/bundles/path`,
@@ -81,7 +88,7 @@ export class Orchestrator {
 
   async postSignedOrderBundle(
     signedOrderBundle: SignedMultiChainCompact,
-    userOp?: UserOperation
+    userOp?: UserOperation,
   ): Promise<string> {
     try {
       const response = await axios.post(
