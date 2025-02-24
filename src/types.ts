@@ -233,6 +233,30 @@ type FinishedBundleStatus =
   | BundleStatus.FINALIZED
   | BundleStatus.PARTIALLY_CLAIMED
 
+export type SimulationResult =
+  | { success: true }
+  | {
+      success: false
+      call: XchainExec
+      details: {
+        message: string
+        contractAddress: Address
+        args: any[]
+        functionName: string
+      }
+    }
+
+export type PostOrderBundleResult = {
+  [bundleId: string]:
+    | {
+        status: BundleStatus.RECEIVED
+      }
+    | {
+        status: BundleStatus.ERROR
+        error: SimulationResult
+      }
+}
+
 export type GetBundleResult =
   | InProgressBundleResult
   | FinishedBundleResult

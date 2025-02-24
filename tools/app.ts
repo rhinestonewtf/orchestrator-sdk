@@ -100,11 +100,10 @@ program
   )
   .action(async (userAddress, targetChain, transfers, options) => {
     const intent = parseBundleArgs(userAddress, targetChain, transfers, options)
-    const { orderBundle, injectedExecutions } = await orchestrator.getOrderPath(
-      intent,
-      userAddress,
-    )
-    console.log(JSON.stringify(orderBundle, null, 2))
+    const result = await orchestrator.getOrderPath(intent, userAddress)
+    for (const { orderBundle, injectedExecutions } of result) {
+      console.log(JSON.stringify(orderBundle, null, 2))
+    }
   })
 
 program

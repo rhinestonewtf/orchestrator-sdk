@@ -4,8 +4,10 @@ import {
   GetBundleResult,
   MetaIntent,
   MultiChainCompact,
+  PostOrderBundleResult,
   SignedMultiChainCompact,
   UserTokenBalance,
+  XchainExec,
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
@@ -60,10 +62,12 @@ export class Orchestrator {
   async getOrderPath(
     intent: MetaIntent,
     userAddress: Address,
-  ): Promise<{
-    orderBundle: MultiChainCompact
-    injectedExecutions: Execution[]
-  }> {
+  ): Promise<
+    {
+      orderBundle: MultiChainCompact
+      injectedExecutions: XchainExec[]
+    }[]
+  > {
     try {
       const response = await axios.post(
         `${this.serverUrl}/accounts/${userAddress}/bundles/path`,
@@ -76,10 +80,7 @@ export class Orchestrator {
           },
         },
       )
-      return {
-        orderBundle: response.data.orderBundle,
-        injectedExecutions: response.data.injectedExecutions,
-      }
+      return response.data
     } catch (error: any) {
       this.parseError(error)
       throw new Error(error)
@@ -87,15 +88,31 @@ export class Orchestrator {
   }
 
   async postSignedOrderBundle(
-    signedOrderBundle: SignedMultiChainCompact,
-    userOp?: UserOperation,
-  ): Promise<string> {
+    signedOrderBundles: {
+      signedOrderBundle: SignedMultiChainCompact
+      userOp?: UserOperation
+    }[],
+  ): Promise<PostOrderBundleResult> {
     try {
+      const bundles = signedOrderBundles.map(
+        (signedOrderBundle: {
+          signedOrderBundle: SignedMultiChainCompact
+          userOp?: UserOperation
+        }) => {
+          return {
+            signedOrderBundle: convertBigIntFields(
+              signedOrderBundle.signedOrderBundle,
+            ),
+            userOp: signedOrderBundle.userOp
+              ? convertBigIntFields(signedOrderBundle.userOp)
+              : undefined,
+          }
+        },
+      )
       const response = await axios.post(
         `${this.serverUrl}/bundles`,
         {
-          signedOrderBundle: convertBigIntFields(signedOrderBundle),
-          userOp: userOp ? convertBigIntFields(userOp) : undefined,
+          bundles,
         },
         {
           headers: {
@@ -103,7 +120,7 @@ export class Orchestrator {
           },
         },
       )
-      return response.data.bundleId
+      return response.data.bundles
     } catch (error) {
       this.parseError(error)
       throw new Error('Failed to post order bundle')
@@ -168,11 +185,14 @@ export class Orchestrator {
         }
       }
       if (error.response.data) {
-        const { errors } = error.response.data
+        const { errors, traceId } = error.response.data
         for (const err of errors) {
           let errorMessage = `Rhinestone Error: ${err.message}`
           if (errorType) {
             errorMessage += ` (${errorType})`
+          }
+          if (traceId) {
+            errorMessage += ` [Trace ID: ${traceId}]`
           }
           console.error(errorMessage)
           if (err.context) {
