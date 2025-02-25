@@ -129,6 +129,12 @@ importers:
 
   tools:
     dependencies:
+      '@rhinestone/module-sdk':
+        specifier: ^0.2.5
+        version: 0.2.5(viem@2.21.60(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5))
+      '@rhinestone/orchestrator-sdk':
+        specifier: link:../src
+        version: link:../src
       commander:
         specifier: ^13.1.0
         version: 13.1.0
@@ -711,6 +717,11 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@rhinestone/module-sdk@0.2.5':
+    resolution: {integrity: sha512-jGxeXMRCw/h1X+i6+9+ugHSKSt6m/RO5hrbVBTGQr8ReeEntO0TM/EZgXCQNcZnOvcfBqBgaEIKk8m4JNCA6Kg==}
+    peerDependencies:
+      viem: ^2.0.0
 
   '@scure/base@1.2.1':
     resolution: {integrity: sha512-DGmGtC8Tt63J5GfHgfl5CuAXh96VF/LD8K9Hr/Gv0J2lAoRGlPOMpqMpMbCTOoOJMZCk2Xt+DskdDyn6dEFdzQ==}
@@ -2138,6 +2149,9 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
+  solady@0.0.235:
+    resolution: {integrity: sha512-JUEXLDG7ag3HmqUnrDG7ilhafH6R9bFPpwV63O2kH4UbnS2+gRGEOqqy4k01O7tHjo3MWkDD0cpG+UY9pjy/fQ==}
+
   source-map-support@0.5.13:
     resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
 
@@ -3145,6 +3159,12 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
+
+  '@rhinestone/module-sdk@0.2.5(viem@2.21.60(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5))':
+    dependencies:
+      solady: 0.0.235
+      tslib: 2.8.1
+      viem: 2.21.60(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)
 
   '@scure/base@1.2.1': {}
 
@@ -4697,6 +4717,8 @@ snapshots:
       tinyglobby: 0.2.10
 
   slash@3.0.0: {}
+
+  solady@0.0.235: {}
 
   source-map-support@0.5.13:
     dependencies:

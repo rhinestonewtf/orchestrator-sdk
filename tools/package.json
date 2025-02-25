@@ -12,10 +12,12 @@
     "orchestrator": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc -p ../tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.build.json",
     "cli": "tsx ./app.ts"
   },
   "dependencies": {
+    "@rhinestone/module-sdk": "^0.2.5",
+    "@rhinestone/orchestrator-sdk": "link:../src",
     "commander": "^13.1.0"
   }
 }

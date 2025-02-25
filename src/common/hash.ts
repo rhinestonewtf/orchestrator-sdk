@@ -7,8 +7,8 @@ import {
   keccak256,
 } from 'viem'
 import { Execution, IntentFillPayload, MultiChainCompact, Segment, SignedMultiChainCompact, TokenArrays6909, Witness } from '../types'
-import { typehashTypes, getRhinestoneSpokePoolAddress, smartContractTypes } from '../constants'
-import { getExecutions, getRhinestoneSpokepoolDomain } from '../utils'
+import { typehashTypes, getRhinestoneSpokePoolAddress, smartContractTypes, getHookAddress } from '../constants'
+import { getCompactDomainSeparator, getExecutions, getRhinestoneSpokepoolDomain } from '../utils'
 
 const MULTICHAIN_COMPACT_TYPEHASH =
   '0xee54591377b86e048be6b2fbd8913598a6270aed3415776321279495bf4efae5'
@@ -96,6 +96,17 @@ export const hashFeeBeneficiary = (
 export const hashIdsAndAmounts = (idsAndAmounts: TokenArrays6909): Hex => {
   // TODO: Check if this is correct
   return keccak256(encodePacked(['uint256[2][]'], [idsAndAmounts]))
+}
+
+export const hashMultiChainCompact = (multiChainCompact: MultiChainCompact): Hex => {
+  const notarizedChainId = Number(multiChainCompact.segments[0].chainId)
+  return hashMultiChainCompactWithDomainSeparator(
+    multiChainCompact,
+    getCompactDomainSeparator(
+      notarizedChainId,
+      getHookAddress(notarizedChainId),
+    ),
+  )
 }
 
 export const hashMultiChainCompactWithDomainSeparator = (
