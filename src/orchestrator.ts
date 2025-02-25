@@ -185,10 +185,10 @@ export class Orchestrator {
     }
   }
 
-  async getBundleStatus(bundleId: string): Promise<BundleResult> {
+  async getBundleStatus(bundleId: bigint): Promise<BundleResult> {
     try {
       const response = await axios.get(
-        `${this.serverUrl}/bundles/${bundleId}`,
+        `${this.serverUrl}/bundles/${bundleId.toString()}`,
         {
           headers: {
             'x-api-key': this.apiKey,

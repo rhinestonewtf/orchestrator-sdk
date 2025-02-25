@@ -17,14 +17,3 @@ export function applyInjectedExecutions(orderPath: {
   }
   return orderPath.orderBundle
 }
-
-export function applyNotarizedSignature(
-  orderBundle: MultiChainCompact,
-  encodedSignature: Hex,
-): SignedMultiChainCompact {
-  return {
-    ...orderBundle,
-    originSignatures: Array(orderBundle.segments.length).fill(encodedSignature),
-    targetSignature: encodedSignature,
-  }
-}

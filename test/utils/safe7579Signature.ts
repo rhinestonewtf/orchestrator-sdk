@@ -1,4 +1,4 @@
-import { Address, Hex } from 'viem'
+import { Address, encodePacked, Hex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
   getOrderBundleHash,
@@ -10,7 +10,7 @@ import {
   PostOrderBundleResult,
   SignedMultiChainCompact,
 } from '../../src/types'
-import { Orchestrator } from '../../src/orchestrator'
+import { Orchestrator } from '../../src'
 import { applyInjectedExecutions } from '../../src/utils'
 
 const OWNABLE_VALIDATOR_ADDRESS: Address =
@@ -21,7 +21,7 @@ export async function signOrderBundleWithOwnableValidator(
   orderBundle: MultiChainCompact,
   privateKey: Hex,
 ): Promise<SignedMultiChainCompact> {
-  const digest = await getOrderBundleHash(orderBundle)
+  const digest = getOrderBundleHash(orderBundle)
 
   const account = privateKeyToAccount(privateKey)
 
@@ -33,7 +33,7 @@ export async function signOrderBundleWithOwnableValidator(
   })
 
   const encodedSignature = (OWNABLE_VALIDATOR_ADDRESS +
-    signature.slice(2)) as Hex
+    encodePacked(['bytes'], [signature]).slice(2)) as Hex
 
   return getSignedOrderBundle(orderBundle, encodedSignature)
 }
@@ -46,8 +46,6 @@ export async function postMetaIntentWithOwnableValidator(
 ): Promise<PostOrderBundleResult> {
   try {
     const orderPath = await orchestrator.getOrderPath(metaIntent, userAddress)
-
-    // TODO: Add injected executions to orderBundleExecution
     const signedOrderBundle = await signOrderBundleWithOwnableValidator(
       applyInjectedExecutions(orderPath[0]),
       privateKey,

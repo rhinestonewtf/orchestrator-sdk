@@ -98,17 +98,6 @@ export const hashIdsAndAmounts = (idsAndAmounts: TokenArrays6909): Hex => {
   return keccak256(encodePacked(['uint256[2][]'], [idsAndAmounts]))
 }
 
-export const hashMultiChainCompact = (multiChainCompact: MultiChainCompact): Hex => {
-  const notarizedChainId = Number(multiChainCompact.segments[0].chainId)
-  return hashMultiChainCompactWithDomainSeparator(
-    multiChainCompact,
-    getCompactDomainSeparator(
-      notarizedChainId,
-      getHookAddress(notarizedChainId),
-    ),
-  )
-}
-
 export const hashMultiChainCompactWithDomainSeparator = (
   multiChainCompact: MultiChainCompact,
   domainSeparator: Hex,

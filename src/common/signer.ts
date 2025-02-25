@@ -4,23 +4,28 @@ import { getCompactDomainSeparator } from '../utils'
 import { MultiChainCompact, SignedMultiChainCompact } from '../types'
 import { hashMultiChainCompactWithDomainSeparator } from './hash'
 
-export async function getOrderBundleHash(
+export function getOrderBundleHash(
   orderBundle: MultiChainCompact,
-): Promise<Hex> {
+): Hex {
   const notarizedChainId = Number(orderBundle.segments[0].chainId)
   return hashMultiChainCompactWithDomainSeparator(
     orderBundle,
-    getCompactDomainSeparator(notarizedChainId, getHookAddress(notarizedChainId)),
+    getCompactDomainSeparator(
+      notarizedChainId,
+      getHookAddress(notarizedChainId),
+    ),
   )
 }
 
-export async function getSignedOrderBundle(
+export function getSignedOrderBundle(
   orderBundle: MultiChainCompact,
   orderBundleSignature: Hex,
-): Promise<SignedMultiChainCompact> {
+): SignedMultiChainCompact {
   return {
     ...orderBundle,
-    originSignatures: Array(orderBundle.segments.length).fill(orderBundleSignature),
+    originSignatures: Array(orderBundle.segments.length).fill(
+      orderBundleSignature,
+    ),
     targetSignature: orderBundleSignature,
   }
 }

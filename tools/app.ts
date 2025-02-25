@@ -3,9 +3,9 @@ import {
   Orchestrator,
   MetaIntent,
   UserTokenBalance,
-  hashMultiChainCompact,
   applyInjectedExecutions,
-  applyNotarizedSignature,
+  getOrderBundleHash,
+  getSignedOrderBundle,
 } from '@rhinestone/orchestrator-sdk'
 import {
   getOwnableValidatorSignature,
@@ -211,7 +211,7 @@ program
           orderBundle,
           injectedExecutions,
         })
-        const messageHash = hashMultiChainCompact(updatedOrderBundle)
+        const messageHash = getOrderBundleHash(updatedOrderBundle)
         const signature = await signer.signMessage({
           message: {
             raw: messageHash,
@@ -225,7 +225,7 @@ program
         const encodedSignature = (OWNABLE_VALIDATOR_ADDRESS +
           ownableValidatorSig.slice(2)) as Hex
 
-        const signedOrderBundle = applyNotarizedSignature(
+        const signedOrderBundle = getSignedOrderBundle(
           updatedOrderBundle,
           encodedSignature,
         )
@@ -234,7 +234,7 @@ program
       }),
     )
     const result = await orchestrator.postSignedOrderBundle(bundles)
-    console.log(JSON.stringify(result, null, 2))
+    console.log(result)
   })
 
 program
