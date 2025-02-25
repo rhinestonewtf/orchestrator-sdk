@@ -199,12 +199,11 @@ export type Token = {
 export type UserTokenBalance = {
   tokenName: string
   tokenDecimals: number
-  balance: string
+  balance: bigint
   tokenChainBalance: {
     chainId: number
     tokenAddress: Address
-    accountAddress: Address
-    balance: string
+    balance: bigint
   }[]
 }
 
@@ -219,6 +218,12 @@ export enum BundleStatus {
   ERROR = 'ERROR',
 }
 
+export enum ClaimStatus { // See prisma schema
+  PENDING = 'PENDING', // not expired and not yet claimed
+  EXPIRED = 'EXPIRED', // claim is not possible as it is expired
+  CLAIMED = 'CLAIMED', // order is claimed
+}
+
 export enum OrderStatus { // See prisma schema
   RECEIVED = 'RECEIVED',
   FILLED = 'FILLED',
@@ -226,12 +231,6 @@ export enum OrderStatus { // See prisma schema
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
 }
-
-type FinishedBundleStatus =
-  | BundleStatus.COMPLETED
-  | BundleStatus.FILLED
-  | BundleStatus.FINALIZED
-  | BundleStatus.PARTIALLY_CLAIMED
 
 export type SimulationResult =
   | { success: true }
@@ -246,42 +245,33 @@ export type SimulationResult =
       }
     }
 
-export type PostOrderBundleResult = {
-  [bundleId: string]:
-    | {
-        status: BundleStatus.RECEIVED
-      }
-    | {
-        status: BundleStatus.ERROR
-        error: SimulationResult
-      }
+export type PostOrderBundleResult = (
+  | {
+      bundleId: bigint
+      status: BundleStatus.RECEIVED
+    }
+  | {
+      bundleId: bigint
+      status: BundleStatus.ERROR
+      error: SimulationResult
+    }
+)[]
+
+export type BundleResult = {
+  status: BundleStatus
+  fillTimestamp?: number
+  fillTransactionHash?: Hex
+  claims: Claim[]
 }
 
-export type GetBundleResult =
-  | InProgressBundleResult
-  | FinishedBundleResult
-  | FailedBundleResult
-
-type OrderResult = {
+export type Claim = {
   depositId: bigint
-  status: OrderStatus
+  chainId: number
+  status: ClaimStatus
+  claimTimestamp?: number
+  claimTransactionHash?: Hex
 }
 
-type InProgressBundleResult = {
-  bundleStatus: BundleStatus.RECEIVED
-  orderStatus: OrderResult[]
-}
-
-type FinishedBundleResult = {
-  bundleStatus: FinishedBundleStatus
-  fillTransactionHash: Hex
-  orderStatus: OrderResult[]
-}
-
-type FailedBundleResult = {
-  bundleStatus: BundleStatus.FAILED | BundleStatus.ERROR
-  orderStatus: OrderResult[]
-}
 
 export type PackedUserOperation = {
   sender: Address

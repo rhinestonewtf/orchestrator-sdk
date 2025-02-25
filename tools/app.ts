@@ -90,7 +90,6 @@ program
               chainBalance: chainBalance.balance,
               tokenDecimals: balance.tokenDecimals,
               tokenAddress: chainBalance.tokenAddress,
-              accountAddress: chainBalance.accountAddress,
             })
           }
           return acc
@@ -147,7 +146,7 @@ program
     )
     const result = await orchestrator.getOrderPath(intent, userAddress)
     for (const { orderBundle, injectedExecutions } of result) {
-      console.log(JSON.stringify(orderBundle, null, 2))
+      console.log(orderBundle)
     }
   })
 
@@ -239,7 +238,8 @@ program
   })
 
 program
-  .command('status')
+  .command('bundle:status')
+  .alias('status')
   .description('Get the status of a bundle')
   .argument('<bundleId>', 'The ID of the bundle')
   .addOption(

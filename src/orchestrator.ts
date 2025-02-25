@@ -1,6 +1,6 @@
 import { Address, concat } from 'viem'
 import {
-  GetBundleResult,
+  BundleResult,
   MetaIntent,
   MultiChainCompact,
   PostOrderBundleResult,
@@ -51,7 +51,21 @@ export class Orchestrator {
           },
         },
       )
-      return response.data.portfolio
+      // TODO: Parse bigint fields
+      return response.data.portfolio.map((balance: any) => {
+        return {
+          ...balance,
+          balance: BigInt(balance.balance),
+          tokenChainBalance: balance.tokenChainBalance.map(
+            (chainBalance: any) => {
+              return {
+                ...chainBalance,
+                balance: BigInt(chainBalance.balance),
+              }
+            },
+          ),
+        }
+      })
     } catch (error) {
       this.parseError(error)
       throw new Error('Failed to get portfolio')
@@ -79,7 +93,46 @@ export class Orchestrator {
           },
         },
       )
-      return response.data
+
+      return response.data.orderBundles.map((orderPath: any) => {
+        return {
+          orderBundle: {
+            ...orderPath.orderBundle,
+            nonce: BigInt(orderPath.orderBundle.nonce),
+            expires: BigInt(orderPath.orderBundle.expires),
+            segments: orderPath.orderBundle.segments.map((segment: any) => {
+              return {
+                ...segment,
+                chainId: BigInt(segment.chainId),
+                idsAndAmounts: segment.idsAndAmounts.map(
+                  (idsAndAmount: any) => {
+                    return [BigInt(idsAndAmount[0]), BigInt(idsAndAmount[1])]
+                  },
+                ),
+                witness: {
+                  ...segment.witness,
+                  depositId: BigInt(segment.witness.depositId),
+                  targetChain: BigInt(segment.witness.targetChain),
+                  fillDeadline: BigInt(segment.witness.fillDeadline),
+                  execs: segment.witness.execs.map((exec: any) => {
+                    return {
+                      ...exec,
+                      value: BigInt(exec.value),
+                    }
+                  }),
+                  maxFeeBps: BigInt(segment.witness.maxFeeBps),
+                },
+              }
+            }),
+          },
+          injectedExecutions: orderPath.injectedExecutions.map((exec: any) => {
+            return {
+              ...exec,
+              value: BigInt(exec.value),
+            }
+          }),
+        }
+      })
     } catch (error: any) {
       this.parseError(error)
       throw new Error(error)
@@ -119,14 +172,20 @@ export class Orchestrator {
           },
         },
       )
-      return response.data.bundles
+
+      return response.data.bundleResults.map((bundleResult: any) => {
+        return {
+          ...bundleResult,
+          bundleId: BigInt(bundleResult.bundleId),
+        }
+      })
     } catch (error) {
       this.parseError(error)
       throw new Error('Failed to post order bundle')
     }
   }
 
-  async getBundleStatus(bundleId: string): Promise<GetBundleResult> {
+  async getBundleStatus(bundleId: string): Promise<BundleResult> {
     try {
       const response = await axios.get(
         `${this.serverUrl}/bundles/${bundleId}`,
@@ -137,14 +196,12 @@ export class Orchestrator {
         },
       )
 
-      response.data.orderStatus = response.data.orderStatus.map(
-        (order: { depositId: string; status: string }) => {
-          return {
-            depositId: BigInt(order.depositId),
-            status: order.status,
-          }
-        },
-      )
+      response.data.claims = response.data.claims.map((claim: any) => {
+        return {
+          ...claim,
+          depositId: BigInt(claim.depositId),
+        }
+      })
 
       return response.data
     } catch (error) {
