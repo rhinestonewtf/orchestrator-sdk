@@ -10,6 +10,7 @@ import {
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
+import { parseResponse } from './utils/bigIntUtils'
 import axios from 'axios'
 
 // TODO: Add strict typing to the return values of the endpoints.
@@ -96,35 +97,7 @@ export class Orchestrator {
 
       return response.data.orderBundles.map((orderPath: any) => {
         return {
-          orderBundle: {
-            ...orderPath.orderBundle,
-            nonce: BigInt(orderPath.orderBundle.nonce),
-            expires: BigInt(orderPath.orderBundle.expires),
-            segments: orderPath.orderBundle.segments.map((segment: any) => {
-              return {
-                ...segment,
-                chainId: BigInt(segment.chainId),
-                idsAndAmounts: segment.idsAndAmounts.map(
-                  (idsAndAmount: any) => {
-                    return [BigInt(idsAndAmount[0]), BigInt(idsAndAmount[1])]
-                  },
-                ),
-                witness: {
-                  ...segment.witness,
-                  depositId: BigInt(segment.witness.depositId),
-                  targetChain: BigInt(segment.witness.targetChain),
-                  fillDeadline: BigInt(segment.witness.fillDeadline),
-                  execs: segment.witness.execs.map((exec: any) => {
-                    return {
-                      ...exec,
-                      value: BigInt(exec.value),
-                    }
-                  }),
-                  maxFeeBps: BigInt(segment.witness.maxFeeBps),
-                },
-              }
-            }),
-          },
+          orderBundle: parseResponse(orderPath.orderBundle),
           injectedExecutions: orderPath.injectedExecutions.map((exec: any) => {
             return {
               ...exec,
@@ -207,6 +180,32 @@ export class Orchestrator {
     } catch (error) {
       this.parseError(error)
       throw new Error('Failed to get bundle status')
+    }
+  }
+
+  async getPendingBundles(
+    count: number = 20,
+    offset: number = 0,
+  ): Promise<{ pendingBundles: MultiChainCompact[]; nextOffset?: number }> {
+    try {
+      const response = await axios.get(`${this.serverUrl}/bundles/events`, {
+        params: {
+          count,
+          offset,
+        },
+        headers: {
+          'x-api-key': this.apiKey,
+        },
+      })
+      const { events: pendingBundles, nextOffset } = response.data
+
+      return {
+        pendingBundles: pendingBundles.map(parseResponse),
+        nextOffset,
+      }
+    } catch (error) {
+      this.parseError(error)
+      throw new Error('Failed to get pending bundles')
     }
   }
 

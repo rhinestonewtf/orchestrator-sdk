@@ -1,7 +1,5 @@
-import { Hex } from 'viem'
 import type {
   MultiChainCompact,
-  SignedMultiChainCompact,
   XchainExec,
 } from '../types'
 

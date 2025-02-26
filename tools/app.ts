@@ -263,6 +263,44 @@ program
     console.log(status)
   })
 
+program
+  .command('bundle:pending')
+  .alias('pending')
+  .addOption(
+    new Option('-c, --count', 'Number of pending bundles to fetch').default(20),
+  )
+  .addOption(
+    new Option('-o, --offset', 'Offset of pending bundles to fetch').default(0),
+  )
+  .addOption(
+    new Option(
+      '--orchestrator-url',
+      'The URL of the orchestrator server',
+    ).default(ORCHESTRATOR_URL),
+  )
+  .addOption(
+    new Option(
+      '--orchestrator-api-key',
+      'The API key for the orchestrator server',
+    ).default(ORCHESTRATOR_API_KEY),
+  )
+  .action(async ({ count, offset, orchestratorUrl, orchestratorApiKey }) => {
+    const orchestrator: Orchestrator = getOrchestrator(
+      orchestratorApiKey,
+      orchestratorUrl,
+    )
+
+    const { pendingBundles, nextOffset} = await orchestrator.getPendingBundles(count, offset)
+    if (pendingBundles.length !== 0) {
+      console.table(pendingBundles)
+    } else {
+      console.log('No pending bundles')
+    }
+    if (nextOffset) {
+      console.log(`Next offset: ${nextOffset}`)
+    }
+  })
+
 function parseBundleArgs(
   userAddress: string,
   targetChain: string,
