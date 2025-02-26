@@ -29,10 +29,10 @@ export function parseResponse<MultiChainCompact>(
   response: any,
 ): MultiChainCompact {
   return {
-    ...response.orderBundle,
-    nonce: BigInt(response.orderBundle.nonce),
-    expires: BigInt(response.orderBundle.expires),
-    segments: response.orderBundle.segments.map((segment: any) => {
+    ...response,
+    nonce: BigInt(response.nonce),
+    expires: BigInt(response.expires),
+    segments: response.segments.map((segment: any) => {
       return {
         ...segment,
         chainId: BigInt(segment.chainId),
