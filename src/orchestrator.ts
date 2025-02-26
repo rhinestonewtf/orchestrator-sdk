@@ -10,7 +10,7 @@ import {
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
-import { parseResponse } from './utils/bigIntUtils'
+import { parseCompactResponse } from './utils/bigIntUtils'
 import axios from 'axios'
 
 // TODO: Add strict typing to the return values of the endpoints.
@@ -97,7 +97,7 @@ export class Orchestrator {
 
       return response.data.orderBundles.map((orderPath: any) => {
         return {
-          orderBundle: parseResponse(orderPath.orderBundle),
+          orderBundle: parseCompactResponse(orderPath.orderBundle),
           injectedExecutions: orderPath.injectedExecutions.map((exec: any) => {
             return {
               ...exec,
@@ -200,7 +200,7 @@ export class Orchestrator {
       const { events: pendingBundles, nextOffset } = response.data
 
       return {
-        pendingBundles: pendingBundles.map(parseResponse),
+        pendingBundles: pendingBundles.map(parseCompactResponse),
         nextOffset,
       }
     } catch (error) {

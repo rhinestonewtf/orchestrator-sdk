@@ -1,3 +1,6 @@
+import { Address, Hex } from 'viem'
+import { Segment, XchainExec, MultiChainCompact } from '../types'
+
 export function convertBigIntFields(obj: any): any {
   if (obj === null || obj === undefined) {
     return obj
@@ -24,35 +27,39 @@ export function convertBigIntFields(obj: any): any {
   return obj
 }
 
-// TODO: Do not export from utils
-export function parseResponse<MultiChainCompact>(
+export function parseCompactResponse(
   response: any,
 ): MultiChainCompact {
   return {
-    ...response,
+    sponsor: response.sponsor as Address,
     nonce: BigInt(response.nonce),
     expires: BigInt(response.expires),
     segments: response.segments.map((segment: any) => {
       return {
-        ...segment,
+        arbiter: segment.arbiter as Address,
         chainId: BigInt(segment.chainId),
         idsAndAmounts: segment.idsAndAmounts.map((idsAndAmount: any) => {
           return [BigInt(idsAndAmount[0]), BigInt(idsAndAmount[1])]
         }),
         witness: {
-          ...segment.witness,
+          recipient: segment.witness.recipient as Address,
+          tokenOut: segment.witness.tokenOut.map((tokenOut: any) => {
+            return [BigInt(tokenOut[0]), BigInt(tokenOut[1])]
+          }),
           depositId: BigInt(segment.witness.depositId),
           targetChain: BigInt(segment.witness.targetChain),
-          fillDeadline: BigInt(segment.witness.fillDeadline),
+          fillDeadline: segment.witness.fillDeadline,
           execs: segment.witness.execs.map((exec: any) => {
             return {
-              ...exec,
+              to: exec.to as Address,
               value: BigInt(exec.value),
-            }
+              data: exec.data as Hex,
+            } as XchainExec
           }),
-          maxFeeBps: BigInt(segment.witness.maxFeeBps),
+          userOpHash: segment.witness.userOpHash as Hex,
+          maxFeeBps: segment.witness.maxFeeBps,
         },
-      }
+      } as Segment
     }),
-  }
+  } as MultiChainCompact
 }
