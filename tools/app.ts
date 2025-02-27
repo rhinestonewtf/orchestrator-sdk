@@ -21,6 +21,8 @@ const SIGNER_KEY = process.env.SIGNER_KEY
 
 const program = new Command()
 
+// TODO: Create safe account command
+
 program
   .command('portfolio')
   .description('Get the portfolio of a user')

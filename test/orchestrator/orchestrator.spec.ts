@@ -14,12 +14,12 @@ dotenv.config()
 describe('Orchestrator Service', () => {
   let orchestrator: Orchestrator
 
-  const accountAddress = '0x579d5631f76126991c00fb8fe5467fa9d49e5f6a'
+  const accountAddress = '0xe6a74e08eff5df62efb601ec04eaf764471da797'
 
   const execution: Execution = {
-    target: getTokenAddress('USDC', 8453),
+    to: getTokenAddress('USDC', 8453),
     value: 0n,
-    callData: encodeFunctionData({
+    data: encodeFunctionData({
       functionName: 'transfer',
       abi: erc20Abi,
       args: [accountAddress, 10n],

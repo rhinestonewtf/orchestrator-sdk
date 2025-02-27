@@ -22,12 +22,12 @@ export type Witness = {
   depositId: bigint
   targetChain: bigint
   fillDeadline: number
-  execs: XchainExec[]
+  execs: Execution[]
   userOpHash: Hex
   maxFeeBps: number
 }
 
-export type XchainExec = {
+export type Execution = {
   to: Address
   value: bigint
   data: Hex
@@ -88,12 +88,6 @@ export type UserOperationMessage = {
 }
 
 export type TokenArrays6909 = readonly (readonly [bigint, bigint])[]
-
-export type Execution = {
-  target: Address
-  value: bigint
-  callData: Hex
-}
 
 export type IntentFillPayload = {
   segments: SegmentData[]
@@ -236,7 +230,7 @@ export type SimulationResult =
   | { success: true }
   | {
       success: false
-      call: XchainExec
+      call: Execution
       details: {
         message: string
         contractAddress: Address

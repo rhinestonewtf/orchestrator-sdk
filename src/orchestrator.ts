@@ -6,7 +6,7 @@ import {
   PostOrderBundleResult,
   SignedMultiChainCompact,
   UserTokenBalance,
-  XchainExec,
+  Execution,
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
@@ -79,7 +79,7 @@ export class Orchestrator {
   ): Promise<
     {
       orderBundle: MultiChainCompact
-      injectedExecutions: XchainExec[]
+      injectedExecutions: Execution[]
     }[]
   > {
     try {

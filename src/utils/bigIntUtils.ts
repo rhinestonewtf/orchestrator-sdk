@@ -1,5 +1,5 @@
 import { Address, Hex } from 'viem'
-import { Segment, XchainExec, MultiChainCompact } from '../types'
+import { Segment, Execution, MultiChainCompact } from '../types'
 
 export function convertBigIntFields(obj: any): any {
   if (obj === null || obj === undefined) {
@@ -54,7 +54,7 @@ export function parseCompactResponse(
               to: exec.to as Address,
               value: BigInt(exec.value),
               data: exec.data as Hex,
-            } as XchainExec
+            } as Execution
           }),
           userOpHash: segment.witness.userOpHash as Hex,
           maxFeeBps: segment.witness.maxFeeBps,

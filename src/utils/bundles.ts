@@ -1,11 +1,11 @@
 import type {
   MultiChainCompact,
-  XchainExec,
+  Execution,
 } from '../types'
 
 export function applyInjectedExecutions(orderPath: {
   orderBundle: MultiChainCompact
-  injectedExecutions: XchainExec[]
+  injectedExecutions: Execution[]
 }): MultiChainCompact {
   if (orderPath.injectedExecutions.length > 0) {
     orderPath.orderBundle.segments[0].witness.execs =

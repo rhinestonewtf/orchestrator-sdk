@@ -6,9 +6,21 @@ import {
   Hex,
   keccak256,
 } from 'viem'
-import { Execution, IntentFillPayload, MultiChainCompact, Segment, SignedMultiChainCompact, TokenArrays6909, Witness } from '../types'
-import { typehashTypes, getRhinestoneSpokePoolAddress, smartContractTypes, getHookAddress } from '../constants'
-import { getCompactDomainSeparator, getExecutions, getRhinestoneSpokepoolDomain } from '../utils'
+import {
+  Execution,
+  IntentFillPayload,
+  MultiChainCompact,
+  Segment,
+  SignedMultiChainCompact,
+  TokenArrays6909,
+  Witness,
+} from '../types'
+import {
+  typehashTypes,
+  getRhinestoneSpokePoolAddress,
+  smartContractTypes,
+} from '../constants'
+import { getRhinestoneSpokepoolDomain } from '../utils'
 
 const MULTICHAIN_COMPACT_TYPEHASH =
   '0xee54591377b86e048be6b2fbd8913598a6270aed3415776321279495bf4efae5'
@@ -40,14 +52,13 @@ const SIGNED_INTENT_WITH_AUCTION_FEE_TYPEHASH =
 const SIGNED_USER_OP_TYPEHASH =
   '0x81264956c7c6625e9c85b65ea4d4eaeb56247ec77f1b277e3635a99ff98b11c2'
 
-
 export const hashExecution = (execution: Execution) => {
   return keccak256(
     encodeAbiParameters(typehashTypes.Execution, [
       EXECUTION_TYPEHASH,
-      execution.target,
+      execution.to,
       execution.value,
-      keccak256(execution.callData),
+      keccak256(execution.data),
     ]),
   )
 }
@@ -79,7 +90,7 @@ export const hashWitness = (witness: Witness): Hex => {
         witness.targetChain,
         witness.fillDeadline,
         // TODO: Figure out if this is correct after the to, value, data BS
-        hashExecutionArray(getExecutions(witness.execs)),
+        hashExecutionArray(witness.execs),
         witness.userOpHash,
         witness.maxFeeBps,
       ],
@@ -234,4 +245,3 @@ export const hashIntentFillPayload = (
     },
   })
 }
-
