@@ -1,10 +1,8 @@
 import { Address } from 'viem'
-import { OrchestratorChainConfig, TokenConfig } from '../types'
+import { SupportedChain, OrchestratorChainConfig, TokenConfig } from '../types'
 
 export const NATIVE_SENTINEL_ADDRESS: Address =
   '0x0000000000000000000000000000000000000000'
-
-type SupportedChain = 8453 | 42161 | 10 | 137 | 11155111 | 84532 | 421614 | 11155420 | 80002
 
 const hook: Address = '0xd1da1f965a95642959f72d6aac7502f003c4cff4'
 const originModule: Address = '0x8b7f8f3a00cde57c9c118c3edeadac5275c945b2'
