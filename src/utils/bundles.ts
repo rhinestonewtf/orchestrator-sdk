@@ -1,9 +1,13 @@
 import {
+  AbiFunction,
   Address,
   concatHex,
   decodeAbiParameters,
+  decodeFunctionData,
   encodeAbiParameters,
+  encodeFunctionData,
   Hex,
+  toFunctionSelector,
   zeroAddress,
 } from 'viem'
 import type {
@@ -58,6 +62,11 @@ export function updateTargetFillPayload(
                 internalType: 'uint256[2][]',
               },
               {
+                name: 'originModule',
+                type: 'address',
+                internalType: 'address',
+              },
+              {
                 name: 'originWETHAddress',
                 type: 'address',
                 internalType: 'address',
@@ -102,8 +111,6 @@ export function updateTargetFillPayload(
     stateMutability: 'nonpayable',
   }
 
-  const selector = targetFillPayload.data.slice(0, 10)
-  const data = targetFillPayload.data.slice(10)
   if (
     targetFillPayload.to !==
     getRhinestoneSpokePoolAddress(targetFillPayload.chainId)
@@ -115,10 +122,18 @@ export function updateTargetFillPayload(
     )
   }
 
-  const [intentFillPayload, ...args] = decodeAbiParameters(
-    abiItem.inputs,
-    ('0x' + data) as Hex,
-  )
+
+  const { functionName, args } = decodeFunctionData({
+    abi: [abiItem],
+    data: targetFillPayload.data,
+  })
+  const [intentFillPayload] = args as any[]
+
+  if (functionName !== 'fill') {
+    throw new Error(
+      `Function name: ${functionName} does not match expected function name: fill`,
+    )
+  }
 
   const numberOfDeposits = (
     intentFillPayload as IntentFillPayload
@@ -148,15 +163,15 @@ export function updateTargetFillPayload(
     repaymentChainIds = [repaymentChainIds]
   }
 
-  const updatedData = concatHex([
-    selector as Hex,
-    encodeAbiParameters(abiItem.inputs, [
+  const updatedData = encodeFunctionData({
+    abi: [abiItem],
+    args: [
       intentFillPayload,
       zeroAddress,
       repaymentAddress,
       repaymentChainIds,
-    ]),
-  ])
+    ],
+  })
 
   return {
     to: targetFillPayload.to,

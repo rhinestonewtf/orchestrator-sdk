@@ -1,6 +1,6 @@
 {
   "name": "@rhinestone/orchestrator-sdk",
-  "version": "0.2.0-rc.2",
+  "version": "0.2.0-rc.3",
   "description": "A TypeScript library for using the Rhinestone Orchestrator",
   "author": {
     "name": "Rhinestone",
