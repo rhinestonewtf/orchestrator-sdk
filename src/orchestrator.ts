@@ -7,10 +7,11 @@ import {
   SignedMultiChainCompact,
   UserTokenBalance,
   Execution,
+  BundleEvent,
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
-import { parseCompactResponse } from './utils/bigIntUtils'
+import { parseCompactResponse, parsePendingBundleEvent } from './utils/bigIntUtils'
 import axios from 'axios'
 
 // TODO: Add strict typing to the return values of the endpoints.
@@ -186,7 +187,7 @@ export class Orchestrator {
   async getPendingBundles(
     count: number = 20,
     offset: number = 0,
-  ): Promise<{ pendingBundles: MultiChainCompact[]; nextOffset?: number }> {
+  ): Promise<{ pendingBundles: BundleEvent[]; nextOffset?: number }> {
     try {
       const response = await axios.get(`${this.serverUrl}/bundles/events`, {
         params: {
@@ -200,7 +201,7 @@ export class Orchestrator {
       const { events: pendingBundles, nextOffset } = response.data
 
       return {
-        pendingBundles: pendingBundles.map(parseCompactResponse),
+        pendingBundles: pendingBundles.map(parsePendingBundleEvent),
         nextOffset,
       }
     } catch (error) {

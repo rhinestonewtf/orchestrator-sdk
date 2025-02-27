@@ -148,16 +148,17 @@ export type MetaIntent =
   | MetaIntentWithUserOp
   | MetaIntentWithExecutions
 
+type ChainExecution = Execution & { chainId: number }
+
 export type BundleEvent = {
-  bundleId: string
+  bundleId: bigint
   type: string
-  targetFillPayload: Execution
-  standardDepositEvents: DepositEvent[]
-  executionDepositEvent: DepositEvent
+  targetFillPayload: ChainExecution
+  acrossDepositEvents: DepositEvent[]
 }
 
 export type DepositEvent = {
-  originClaimPayload: Execution
+  originClaimPayload: ChainExecution
   inputToken: Address // address
   outputToken: Address // address
   inputAmount: bigint // uint256
@@ -265,7 +266,6 @@ export type Claim = {
   claimTimestamp?: number
   claimTransactionHash?: Hex
 }
-
 
 export type PackedUserOperation = {
   sender: Address

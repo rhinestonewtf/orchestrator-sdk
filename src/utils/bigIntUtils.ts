@@ -1,5 +1,5 @@
 import { Address, Hex } from 'viem'
-import { Segment, Execution, MultiChainCompact } from '../types'
+import { Segment, Execution, MultiChainCompact, BundleEvent } from '../types'
 
 export function convertBigIntFields(obj: any): any {
   if (obj === null || obj === undefined) {
@@ -27,9 +27,7 @@ export function convertBigIntFields(obj: any): any {
   return obj
 }
 
-export function parseCompactResponse(
-  response: any,
-): MultiChainCompact {
+export function parseCompactResponse(response: any): MultiChainCompact {
   return {
     sponsor: response.sponsor as Address,
     nonce: BigInt(response.nonce),
@@ -62,4 +60,40 @@ export function parseCompactResponse(
       } as Segment
     }),
   } as MultiChainCompact
+}
+
+export function parsePendingBundleEvent(response: any): BundleEvent {
+  return {
+    type: response.type,
+    bundleId: BigInt(response.bundleId),
+    targetFillPayload: {
+      to: response.targetFillPayload.to as Address,
+      data: response.targetFillPayload.data as Hex,
+      value: BigInt(response.targetFillPayload.value),
+      chainId: response.targetFillPayload.chainId,
+    },
+    acrossDepositEvents: response.acrossDepositEvents.map((event: any) => {
+      return {
+        message: event.message,
+        depositId: BigInt(event.depositId),
+        depositor: event.depositor as Address,
+        recipient: event.recipient as Address,
+        inputToken: event.inputToken as Address,
+        inputAmount: BigInt(event.inputAmount),
+        outputToken: event.outputToken as Address,
+        fillDeadline: event.fillDeadline,
+        outputAmount: BigInt(event.outputAmount),
+        quoteTimestamp: event.quoteTimestamp,
+        exclusiveRelayer: event.exclusiveRelayer as Address,
+        destinationChainId: event.destinationChainId,
+        originClaimPayload: {
+          to: event.originClaimPayload.to as Address,
+          data: event.originClaimPayload.data as Hex,
+          value: BigInt(event.originClaimPayload.value),
+          chainId: event.originClaimPayload.chainId,
+        },
+        exclusivityDeadline: event.exclusivityDeadline,
+      }
+    }),
+  }
 }
