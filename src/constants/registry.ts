@@ -254,6 +254,19 @@ export function getTokenSymbol(tokenAddress: Address, chainId: number): string {
   return token.symbol
 }
 
+export function isTokenSupported(
+  tokenSymbol: string,
+  chainId: number,
+): boolean {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  return registry[chainId as SupportedChain].supportedTokens.some(
+    (token: TokenConfig) => token.symbol === tokenSymbol,
+  )
+}
+
 export function getTokenAddress(tokenSymbol: string, chainId: number): Address {
   if (!isSupportedChainId(chainId)) {
     throw new Error(`Chain ${chainId} not supported`)

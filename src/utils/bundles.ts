@@ -1,13 +1,7 @@
 import {
-  AbiFunction,
   Address,
-  concatHex,
-  decodeAbiParameters,
   decodeFunctionData,
-  encodeAbiParameters,
   encodeFunctionData,
-  Hex,
-  toFunctionSelector,
   zeroAddress,
 } from 'viem'
 import type {
@@ -17,7 +11,9 @@ import type {
   IntentFillPayload,
   SegmentData,
 } from '../types'
-import { getRhinestoneSpokePoolAddress } from '../constants'
+import {
+  getRhinestoneSpokePoolAddress,
+} from '../constants'
 
 export function applyInjectedExecutions(orderPath: {
   orderBundle: MultiChainCompact
@@ -122,7 +118,6 @@ export function updateTargetFillPayload(
     )
   }
 
-
   const { functionName, args } = decodeFunctionData({
     abi: [abiItem],
     data: targetFillPayload.data,
@@ -165,12 +160,7 @@ export function updateTargetFillPayload(
 
   const updatedData = encodeFunctionData({
     abi: [abiItem],
-    args: [
-      intentFillPayload,
-      zeroAddress,
-      repaymentAddress,
-      repaymentChainIds,
-    ],
+    args: [intentFillPayload, zeroAddress, repaymentAddress, repaymentChainIds],
   })
 
   return {

@@ -223,14 +223,6 @@ export enum ClaimStatus { // See prisma schema
   CLAIMED = 'CLAIMED', // order is claimed
 }
 
-export enum OrderStatus { // See prisma schema
-  RECEIVED = 'RECEIVED',
-  FILLED = 'FILLED',
-  FINALIZED = 'FINALIZED',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-}
-
 export type SimulationResult =
   | { success: true }
   | {
