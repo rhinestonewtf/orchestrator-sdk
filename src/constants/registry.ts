@@ -111,6 +111,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Ethereum
+  1: {
+    spokepool: '0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5',
+    hook: hook,
+    originModule: originModule,
+    targetModule: targetModule,
+    sameChainModule: sameChainModule,
+    weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    supportedTokens: [
+      {
+        symbol: 'ETH',
+        address: NATIVE_SENTINEL_ADDRESS,
+        decimals: 18,
+      },
+      {
+        symbol: 'USDC',
+        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        decimals: 6,
+      },
+      {
+        symbol: 'WETH',
+        address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+        decimals: 18,
+      },
+    ],
+  },
+
   // Ethereum Sepolia
   11155111: {
     spokepool: '0x2171A3C4592d5Ae06E0257728aB4E88E575f4cF3',

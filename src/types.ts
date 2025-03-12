@@ -2,7 +2,7 @@ import { Address, Hex } from 'viem'
 import type { UserOperation } from 'viem/account-abstraction'
 
 export type SupportedTestnet = 11155111 | 84532 | 421614 | 11155420 | 80002
-export type SupportedMainnet = 8453 | 42161 | 10 | 137
+export type SupportedMainnet = 1 | 8453 | 42161 | 10 | 137
 export type SupportedChain = SupportedMainnet | SupportedTestnet
 
 // TODO: these types need to be updated to the latest contract structs
