@@ -2,7 +2,7 @@ import { Address, Hex } from 'viem'
 import type { UserOperation } from 'viem/account-abstraction'
 
 export type SupportedTestnet = 11155111 | 84532 | 421614 | 11155420 | 80002
-export type SupportedMainnet = 8453 | 42161 | 10 | 137
+export type SupportedMainnet = 1 | 8453 | 42161 | 10 | 137
 export type SupportedChain = SupportedMainnet | SupportedTestnet
 
 // TODO: these types need to be updated to the latest contract structs
@@ -207,14 +207,12 @@ export type UserTokenBalance = {
 }
 
 export enum BundleStatus {
-  RECEIVED = 'RECEIVED',
-  FILLED = 'FILLED',
-  FINALIZED = 'FINALIZED',
-  PARTIALLY_CLAIMED = 'PARTIALLY_CLAIMED',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  CLAIM_FAILED = 'CLAIM_FAILED',
-  ERROR = 'ERROR',
+  PENDING = 'PENDING', // bundle is created and all claims are pending
+  EXPIRED = 'EXPIRED', // bundle is created and call claims are expired
+  PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED', // = not completed :D (at least one claim made or fill happened)
+  COMPLETED = 'COMPLETED', // fill tx received, all deposits claimed
+  FAILED = 'FAILED', // either fill expired with at least one claim, or claims expired and fill happened
+  UNKNOWN = 'UNKNOWN', // marker status in case we change the logic and it is not handled on get status endpoint
 }
 
 export enum ClaimStatus { // See prisma schema
@@ -239,11 +237,11 @@ export type SimulationResult =
 export type PostOrderBundleResult = (
   | {
       bundleId: bigint
-      status: BundleStatus.RECEIVED
+      status: BundleStatus.PENDING
     }
   | {
       bundleId: bigint
-      status: BundleStatus.ERROR
+      status: BundleStatus.FAILED
       error: SimulationResult
     }
 )[]
