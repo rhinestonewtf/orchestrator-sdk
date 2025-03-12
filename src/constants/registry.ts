@@ -4,12 +4,12 @@ import { SupportedChain, OrchestratorChainConfig, TokenConfig } from '../types'
 export const NATIVE_SENTINEL_ADDRESS: Address =
   '0x0000000000000000000000000000000000000000'
 
-const hook: Address = '0xd1da1f965a95642959f72d6aac7502f003c4cff4'
-const originModule: Address = '0x8b7f8f3a00cde57c9c118c3edeadac5275c945b2'
-const targetModule: Address = '0x90834033cde930a3b1d93452f8fd7674b4c5a35f'
-const sameChainModule: Address = '0x871950da2680962c7a2bd4923e3e1fc1b08c91fa'
+const hook: Address = '0x0000000000f6Ed8Be424d673c63eeFF8b9267420'
+const originModule: Address = '0x0000000000AFc904aE9860D9c4B96D7c529c58b8'
+const targetModule: Address = '0x0000000000E5a37279A001301A837a91b5de1D5E'
+const sameChainModule: Address = '0x000000000043ff16d5776c7F0f65Ec485C17Ca04'
 const rhinestoneSpokepoolAddress: Address =
-  '0xea34faadb44f6078c24cb82d6be3185a262ddee6'
+  '0x000000000060f6e853447881951574CDd0663530'
 
 export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
   // Base Mainnet
@@ -137,7 +137,6 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
       },
     ],
   },
-
   // Ethereum Sepolia
   11155111: {
     spokepool: '0x2171A3C4592d5Ae06E0257728aB4E88E575f4cF3',
