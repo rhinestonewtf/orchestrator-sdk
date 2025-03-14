@@ -1,4 +1,4 @@
-import { Address, concat } from 'viem'
+import { Address, concat, Hex } from 'viem'
 import {
   BundleResult,
   MetaIntent,
@@ -11,7 +11,10 @@ import {
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
-import { parseCompactResponse, parsePendingBundleEvent } from './utils/bigIntUtils'
+import {
+  parseCompactResponse,
+  parsePendingBundleEvent,
+} from './utils/bigIntUtils'
 import axios from 'axios'
 
 // TODO: Add strict typing to the return values of the endpoints.
@@ -116,6 +119,7 @@ export class Orchestrator {
   async postSignedOrderBundle(
     signedOrderBundles: {
       signedOrderBundle: SignedMultiChainCompact
+      initCode?: Hex
       userOp?: UserOperation
     }[],
   ): Promise<PostOrderBundleResult> {
@@ -123,12 +127,14 @@ export class Orchestrator {
       const bundles = signedOrderBundles.map(
         (signedOrderBundle: {
           signedOrderBundle: SignedMultiChainCompact
+          initCode?: Hex
           userOp?: UserOperation
         }) => {
           return {
             signedOrderBundle: convertBigIntFields(
               signedOrderBundle.signedOrderBundle,
             ),
+            initCode: signedOrderBundle.initCode,
             userOp: signedOrderBundle.userOp
               ? convertBigIntFields(signedOrderBundle.userOp)
               : undefined,
