@@ -1,16 +1,16 @@
-import { zeroAddress, zeroHash } from 'viem'
-import { PackedUserOperation } from '../types'
+import { zeroAddress } from 'viem'
+import { UserOperation } from 'viem/account-abstraction'
 
-export function getEmptyUserOp(): PackedUserOperation {
+export function getEmptyUserOp(): UserOperation<"0.7"> {
   return {
     sender: zeroAddress,
     nonce: 0n,
-    initCode: '0x',
     callData: '0x',
-    accountGasLimits: zeroHash,
     preVerificationGas: 0n,
-    gasFees: zeroHash,
-    paymasterAndData: '0x',
+    maxFeePerGas: 0n,
+    maxPriorityFeePerGas: 0n,
+    verificationGasLimit: 0n,
+    callGasLimit: 0n,
     signature: '0x',
   }
 }

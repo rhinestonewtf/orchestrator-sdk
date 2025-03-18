@@ -1,21 +1,27 @@
-import { Address, Hex } from 'viem'
+import { Address, encodePacked, Hex } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
 import {
   getOrderBundleHash,
   getSignedOrderBundle,
 } from '../../src/common/signer'
-import { MetaIntent, SignedIntent, SignedOrderBundle } from '../../src/types'
-import { privateKeyToAccount } from 'viem/accounts'
-import { Orchestrator } from '../../src/orchestrator'
+import {
+  MetaIntent,
+  MultiChainCompact,
+  PostOrderBundleResult,
+  SignedMultiChainCompact,
+} from '../../src/types'
+import { Orchestrator } from '../../src'
+import { applyInjectedExecutions } from '../../src/utils'
 
 const OWNABLE_VALIDATOR_ADDRESS: Address =
   '0x2483da3a338895199e5e538530213157e931bf06'
 
 // NOTE: This only works for Safe7579
 export async function signOrderBundleWithOwnableValidator(
-  orderBundle: SignedIntent,
+  orderBundle: MultiChainCompact,
   privateKey: Hex,
-): Promise<SignedOrderBundle> {
-  const digest = await getOrderBundleHash(orderBundle)
+): Promise<SignedMultiChainCompact> {
+  const digest = getOrderBundleHash(orderBundle)
 
   const account = privateKeyToAccount(privateKey)
 
@@ -27,30 +33,25 @@ export async function signOrderBundleWithOwnableValidator(
   })
 
   const encodedSignature = (OWNABLE_VALIDATOR_ADDRESS +
-    signature.slice(2)) as Hex
+    encodePacked(['bytes'], [signature]).slice(2)) as Hex
 
   return getSignedOrderBundle(orderBundle, encodedSignature)
 }
 
 export async function postMetaIntentWithOwnableValidator(
   metaIntent: MetaIntent,
-  userId: string,
+  userAddress: Address,
   privateKey: Hex,
   orchestrator: Orchestrator,
-): Promise<string> {
+): Promise<PostOrderBundleResult> {
   try {
-    const { orderBundle, injectedExecutions } = await orchestrator.getOrderPath(
-      metaIntent,
-      userId,
-    )
-
-    // TODO: Add injected executions to orderBundleExecution
+    const orderPath = await orchestrator.getOrderPath(metaIntent, userAddress)
     const signedOrderBundle = await signOrderBundleWithOwnableValidator(
-      orderBundle,
+      applyInjectedExecutions(orderPath[0]),
       privateKey,
     )
 
-    return orchestrator.postSignedOrderBundle(signedOrderBundle, userId)
+    return orchestrator.postSignedOrderBundle([{ signedOrderBundle }])
   } catch (error) {
     if (error instanceof Error) {
       console.log(error)

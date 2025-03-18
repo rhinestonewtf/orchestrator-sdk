@@ -1,36 +1,24 @@
 import { Address } from 'viem'
-
-import {
-  arbitrum,
-  arbitrumSepolia,
-  base,
-  baseSepolia,
-  optimism,
-  optimismSepolia,
-  polygon,
-  polygonAmoy,
-  sepolia,
-} from 'viem/chains'
-import { OrchestratorChainConfig, TokenConfig } from '../types'
+import { SupportedChain, OrchestratorChainConfig, TokenConfig } from '../types'
 
 export const NATIVE_SENTINEL_ADDRESS: Address =
-  '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+  '0x0000000000000000000000000000000000000000'
 
-export const hook: Address = '0x29BDcBc36e344061393f8AB58D2D6AABaedeAaAE'
-export const originModule: Address =
-  '0xE1058634834E01038CadbaE8208BFfF81B1Ede51'
-export const targetModule: Address =
-  '0xA90F831363708B32a3f1502165253E0210cf680d'
+const hook: Address = '0x0000000000f6Ed8Be424d673c63eeFF8b9267420'
+const originModule: Address = '0x0000000000AFc904aE9860D9c4B96D7c529c58b8'
+const targetModule: Address = '0x0000000000E5a37279A001301A837a91b5de1D5E'
+const sameChainModule: Address = '0x000000000043ff16d5776c7F0f65Ec485C17Ca04'
+const rhinestoneSpokepoolAddress: Address =
+  '0x000000000060f6e853447881951574CDd0663530'
 
-export const registry: Record<number, OrchestratorChainConfig> = {
+export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
+  // Base Mainnet
   8453: {
-    // Base Mainnet
-    rpcUrl: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: base,
     spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
@@ -50,14 +38,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Arbitrum Mainnet
   42161: {
-    // Arbitrum Mainnet
-    rpcUrl: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: arbitrum,
     spokepool: '0x35F36B0ebfFe06Dc29e3d11ae8b335d3Af4D014A',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     supportedTokens: [
       {
@@ -77,14 +64,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Optimism Mainnet
   10: {
-    // Optimism Mainnet
-    rpcUrl: `https://opt-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: optimism,
     spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
@@ -104,14 +90,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Polygon Mainnet
   137: {
-    // Polygon Mainnet
-    rpcUrl: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: polygon,
     spokepool: '0x096D7c616cF40cf0de667c3Ccc9fc322079f4645',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
     supportedTokens: [
       {
@@ -126,15 +111,39 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
-
+  // Ethereum
+  1: {
+    spokepool: '0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5',
+    hook: hook,
+    originModule: originModule,
+    targetModule: targetModule,
+    sameChainModule: sameChainModule,
+    weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    supportedTokens: [
+      {
+        symbol: 'ETH',
+        address: NATIVE_SENTINEL_ADDRESS,
+        decimals: 18,
+      },
+      {
+        symbol: 'USDC',
+        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        decimals: 6,
+      },
+      {
+        symbol: 'WETH',
+        address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+        decimals: 18,
+      },
+    ],
+  },
+  // Ethereum Sepolia
   11155111: {
-    // Ethereum Sepolia
-    rpcUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: sepolia,
     spokepool: '0x2171A3C4592d5Ae06E0257728aB4E88E575f4cF3',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
     supportedTokens: [
       {
@@ -154,14 +163,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Base Sepolia
   84532: {
-    // Base Sepolia
-    rpcUrl: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: baseSepolia,
     spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
@@ -181,14 +189,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Arbitrum Sepolia
   421614: {
-    // Arbitrum Sepolia
-    rpcUrl: `https://arb-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: arbitrumSepolia,
     spokepool: '0xAE6B1f4aA87e0F73DADb10B9CA4F8531BfaFAD19',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x980B62Da83eFf3D4576C647993b0c1D7faf17c73',
     supportedTokens: [
       {
@@ -208,13 +215,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Optimism Sepolia
   11155420: {
-    rpcUrl: `https://opt-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: optimismSepolia,
     spokepool: '0x20038b572633E45F3aB5b1a46CB85D0D241b80D8',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x4200000000000000000000000000000000000006',
     supportedTokens: [
       {
@@ -234,14 +241,13 @@ export const registry: Record<number, OrchestratorChainConfig> = {
       },
     ],
   },
+  // Polygon Amoy
   80002: {
-    // Polygon Amoy
-    rpcUrl: `https://polygon-amoy.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    viemChain: polygonAmoy,
     spokepool: '0x0c6Fd5973bbDDAeaFC2F5f3989BbCD1635850D73',
     hook: hook,
     originModule: originModule,
     targetModule: targetModule,
+    sameChainModule: sameChainModule,
     weth: '0x52eF3d68BaB452a294342DC3e5f464d7f610f72E',
     supportedTokens: [
       {
@@ -263,7 +269,7 @@ export function getTokenSymbol(tokenAddress: Address, chainId: number): string {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  const token = registry[chainId].supportedTokens.find(
+  const token = registry[chainId as SupportedChain].supportedTokens.find(
     (token) => token.address.toLowerCase() === tokenAddress.toLowerCase(),
   )
 
@@ -274,12 +280,25 @@ export function getTokenSymbol(tokenAddress: Address, chainId: number): string {
   return token.symbol
 }
 
+export function isTokenSupported(
+  tokenSymbol: string,
+  chainId: number,
+): boolean {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  return registry[chainId as SupportedChain].supportedTokens.some(
+    (token: TokenConfig) => token.symbol === tokenSymbol,
+  )
+}
+
 export function getTokenAddress(tokenSymbol: string, chainId: number): Address {
   if (!isSupportedChainId(chainId)) {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  const token = registry[chainId].supportedTokens.find(
+  const token = registry[chainId as SupportedChain].supportedTokens.find(
     (token) => token.symbol === tokenSymbol,
   )
 
@@ -303,7 +322,7 @@ export function getSupportedTokens(chainId: number): TokenConfig[] {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].supportedTokens
+  return registry[chainId as SupportedChain].supportedTokens
 }
 
 export const getSpokePoolAddress = (chainId: number): Address => {
@@ -311,7 +330,15 @@ export const getSpokePoolAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].spokepool
+  return registry[chainId as SupportedChain].spokepool
+}
+
+export const getRhinestoneSpokePoolAddress = (chainId: number): Address => {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  return rhinestoneSpokepoolAddress
 }
 
 export const getHookAddress = (chainId: number): Address => {
@@ -319,7 +346,7 @@ export const getHookAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].hook
+  return registry[chainId as SupportedChain].hook
 }
 
 export const getOriginModuleAddress = (chainId: number): Address => {
@@ -327,7 +354,7 @@ export const getOriginModuleAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].originModule
+  return registry[chainId as SupportedChain].originModule
 }
 
 export const getTargetModuleAddress = (chainId: number): Address => {
@@ -335,7 +362,15 @@ export const getTargetModuleAddress = (chainId: number): Address => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId].targetModule
+  return registry[chainId as SupportedChain].targetModule
+}
+
+export const getSameChainModuleAddress = (chainId: number): Address => {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  return registry[chainId as SupportedChain].sameChainModule
 }
 
 export const getChainConfig = (chainId: number): OrchestratorChainConfig => {
@@ -343,5 +378,5 @@ export const getChainConfig = (chainId: number): OrchestratorChainConfig => {
     throw new Error(`Chain ${chainId} not supported`)
   }
 
-  return registry[chainId]
+  return registry[chainId as SupportedChain]
 }
