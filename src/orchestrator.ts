@@ -247,7 +247,7 @@ export class Orchestrator {
             errorType = 'Unknown'
         }
       }
-      const context = {}
+      let context = {}
       if (error.response.data) {
         const { errors, traceId } = error.response.data
         for (const err of errors) {
@@ -265,11 +265,17 @@ export class Orchestrator {
               `Context: ${JSON.stringify(err.context, undefined, 4)}`,
             )
           }
+          context = { ...context, ...err.context }
         }
       } else {
         console.error(error)
       }
-      throw new RhinestoneError(errorType || 'Unknown', context)
+      throw new RhinestoneError({
+        message: 'Rhinestone Error',
+        context,
+        errorType,
+        traceId: context['traceId'],
+      })
     }
   }
 }
