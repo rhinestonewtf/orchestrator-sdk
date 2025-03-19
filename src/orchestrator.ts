@@ -8,6 +8,7 @@ import {
   UserTokenBalance,
   Execution,
   BundleEvent,
+  RhinestoneError,
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
@@ -246,6 +247,7 @@ export class Orchestrator {
             errorType = 'Unknown'
         }
       }
+      const context = {}
       if (error.response.data) {
         const { errors, traceId } = error.response.data
         for (const err of errors) {
@@ -255,6 +257,7 @@ export class Orchestrator {
           }
           if (traceId) {
             errorMessage += ` [Trace ID: ${traceId}]`
+            context['traceId'] = traceId
           }
           console.error(errorMessage)
           if (err.context) {
@@ -266,6 +269,7 @@ export class Orchestrator {
       } else {
         console.error(error)
       }
+      throw new RhinestoneError(errorType || 'Unknown', context)
     }
   }
 }

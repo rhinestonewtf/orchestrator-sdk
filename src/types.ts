@@ -288,3 +288,7 @@ export type TokenConfig = {
   address: Address
   decimals: number
 }
+
+export class RhinestoneError extends Error {
+  constructor(reason: string, context: any) {}
+}
