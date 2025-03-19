@@ -1,4 +1,4 @@
-import { Address } from 'viem'
+import { Address, encodeAbiParameters, Hex, keccak256 } from 'viem'
 import { SupportedChain, OrchestratorChainConfig, TokenConfig } from '../types'
 
 export const NATIVE_SENTINEL_ADDRESS: Address =
@@ -25,16 +25,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x4200000000000000000000000000000000000006',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -51,16 +68,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -77,16 +111,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x4200000000000000000000000000000000000006',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -103,11 +154,27 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'USDC',
         address: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -124,16 +191,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -150,16 +234,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -176,16 +277,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x4200000000000000000000000000000000000006',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -202,16 +320,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x980B62Da83eFf3D4576C647993b0c1D7faf17c73',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -228,16 +363,33 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'ETH',
         address: NATIVE_SENTINEL_ADDRESS,
         decimals: 18,
+        balanceSlot: () => '0x',
       },
       {
         symbol: 'USDC',
         address: '0x5fd84259d66Cd46123540766Be93DFE6D43130D7',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x4200000000000000000000000000000000000006',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -254,11 +406,27 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
         symbol: 'USDC',
         address: '0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582',
         decimals: 6,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 9n],
+            ),
+          )
+        },
       },
       {
         symbol: 'WETH',
         address: '0x52eF3d68BaB452a294342DC3e5f464d7f610f72E',
         decimals: 18,
+        balanceSlot: (address: Address) => {
+          return keccak256(
+            encodeAbiParameters(
+              [{ type: 'address' }, { type: 'uint256' }],
+              [address, 3n],
+            ),
+          )
+        },
       },
     ],
   },
@@ -307,6 +475,26 @@ export function getTokenAddress(tokenSymbol: string, chainId: number): Address {
   }
 
   return token.address
+}
+
+export function getTokenBalanceSlot(
+  tokenSymbol: string,
+  chainId: number,
+  accountAddress: Address,
+): Hex {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  const token = registry[chainId as SupportedChain].supportedTokens.find(
+    (token) => token.symbol === tokenSymbol,
+  )
+
+  if (!token) {
+    throw new Error(`Token ${tokenSymbol} not supported on chain ${chainId}`)
+  }
+
+  return token.balanceSlot(accountAddress)
 }
 
 export function getSupportedChainIds(): number[] {
