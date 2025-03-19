@@ -8,7 +8,6 @@ import {
   UserTokenBalance,
   Execution,
   BundleEvent,
-  RhinestoneError,
 } from './types'
 import type { UserOperation } from 'viem/account-abstraction'
 import { convertBigIntFields } from './utils'
@@ -17,6 +16,7 @@ import {
   parsePendingBundleEvent,
 } from './utils/bigIntUtils'
 import axios from 'axios'
+import { OrchestratorError } from './utils/errors'
 
 // TODO: Add strict typing to the return values of the endpoints.
 
@@ -270,7 +270,7 @@ export class Orchestrator {
       } else {
         console.error(error)
       }
-      throw new RhinestoneError({
+      throw new OrchestratorError({
         message: 'Rhinestone Error',
         context,
         errorType,
