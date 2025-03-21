@@ -91,7 +91,7 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
           return keccak256(
             encodeAbiParameters(
               [{ type: 'address' }, { type: 'uint256' }],
-              [address, 3n],
+              [address, 51n],
             ),
           )
         },
@@ -343,7 +343,7 @@ export const registry: Record<SupportedChain, OrchestratorChainConfig> = {
           return keccak256(
             encodeAbiParameters(
               [{ type: 'address' }, { type: 'uint256' }],
-              [address, 3n],
+              [address, 51n],
             ),
           )
         },
