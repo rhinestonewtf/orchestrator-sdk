@@ -1,6 +1,6 @@
 import { createPublicClient, http, StateOverride, zeroAddress } from 'viem'
 import { MetaIntent } from '../types'
-import { getHookAddress } from '../constants/registry'
+import { getHookAddress, getTokenAddress } from '../constants/registry'
 import { UserOperation } from 'viem/account-abstraction'
 
 export async function getStateOverride(
@@ -28,7 +28,8 @@ export async function addIntentOverhead(
 
   if (
     intent.tokenTransfers.some(
-      (transfer) => transfer.tokenAddress === zeroAddress,
+      (transfer) =>
+        transfer.tokenAddress === getTokenAddress('ETH', intent.targetChainId),
     )
   ) {
     userOp.callGasLimit += WETH_UNWRAP_GAS
