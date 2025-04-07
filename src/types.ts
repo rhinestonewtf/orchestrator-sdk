@@ -227,10 +227,7 @@ export type SimulationResult =
       success: false
       call: Execution
       details: {
-        message: string
-        contractAddress: Address
-        args: any[]
-        functionName: string
+        blockNumber: bigint
       }
     }
 
