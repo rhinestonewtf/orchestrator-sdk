@@ -19,11 +19,6 @@ Additionally, the Orchestrator SDK exposes useful types and ABIs that developers
 
 ### For Solvers
 
-The Orchestrator SDK enables you to:
-
-- **Retrieve Claim Payloads:** Obtain signed claim payloads from the orchestrator after executing a fill on the target chain.
-- **Perform Source Chain Deposits:** Use the claim payloads to facilitate deposits on the source chain.
-
 If you are looking for a mock implementation of a relayer, please visit our [Rhinestone Relayer Repository](https://github.com/rhinestonewtf/rhinestone-relayer).
 
 For comprehensive documentation on the Chain Abstraction System, please refer to: [Chain Abstraction Docs](https://rhinestone.notion.site/Chain-Abstraction-Docs-External-4790f4303e934b16a6fb24637e6f67e7?pvs=4).
