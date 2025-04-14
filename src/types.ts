@@ -206,6 +206,59 @@ export type UserTokenBalance = {
   }[]
 }
 
+export type UserChainBalances = {
+  [chainId: number]: { [tokenAddress: Address]: bigint }
+}
+
+/// Subset of MetaIntent where up to one amount can be undefined
+export type OrderFeeInput = {
+  targetChainId: number
+  targetGasUnits?: bigint
+  userOp?: {
+    callGasLimit: bigint
+    verificationGasLimit: bigint
+    preVerificationGas: bigint
+  }
+  tokenTransfers: {
+    tokenAddress: Address
+    amount?: bigint // If no amount is set, max amount of inputs will be converted
+    // NOTE: Only one token may have an unset amount
+  }[]
+  accountAccessList?: {
+    chainId: number
+    tokenAddress: Address
+  }[]
+}
+
+export type TokenFulfillmentStatus = {
+  hasFulfilled: boolean
+  tokenAddress: Address
+  amountSpent: bigint
+  targetAmount: bigint
+  fee: bigint
+}
+
+export type OrderCost = {
+  hasFulfilledAll: true
+  tokensSpent: UserChainBalances
+  tokensReceived: TokenFulfillmentStatus[]
+}
+
+export type InsufficientBalanceResult = {
+  hasFulfilledAll: false
+  tokenShortfall: {
+    tokenAddress: Address
+    targetAmount: bigint
+    amountSpent: bigint
+    fee: bigint
+    tokenSymbol: string
+    tokenDecimals: number
+  }[]
+  totalTokenShortfallInUSD: bigint
+}
+
+export type OrderCostResult = OrderCost | InsufficientBalanceResult
+
 export enum BundleStatus {
   PENDING = 'PENDING', // bundle is created and all claims are pending
   EXPIRED = 'EXPIRED', // bundle is created and call claims are expired

@@ -1,5 +1,15 @@
 import { Address, Hex } from 'viem'
-import { Segment, Execution, MultiChainCompact, BundleEvent } from '../types'
+import {
+  Segment,
+  Execution,
+  MultiChainCompact,
+  BundleEvent,
+  UserChainBalances,
+  OrderCost,
+  TokenFulfillmentStatus,
+  InsufficientBalanceResult,
+  OrderCostResult,
+} from '../types'
 
 export function convertBigIntFields(obj: any): any {
   if (obj === null || obj === undefined) {
@@ -60,6 +70,98 @@ export function parseCompactResponse(response: any): MultiChainCompact {
       } as Segment
     }),
   } as MultiChainCompact
+}
+
+export function parseUseChainBalances(response: any): UserChainBalances {
+  const result: UserChainBalances = {}
+
+  for (const chainIdStr in response) {
+    const chainId = Number(chainIdStr)
+    const chainData = response[chainIdStr]
+    result[chainId] = {}
+
+    for (const tokenAddress in chainData) {
+      const balanceStr = chainData[tokenAddress]?.balance
+      result[chainId][tokenAddress as Address] = BigInt(balanceStr)
+    }
+  }
+
+  return result
+}
+
+export function parseOrderCost(response: any): OrderCost {
+  const tokensSpent: UserChainBalances = {}
+
+  for (const chainIdStr in response.tokensSpent) {
+    const chainId = Number(chainIdStr)
+    tokensSpent[chainId] = {}
+
+    const chainTokens = response.tokensSpent[chainIdStr]
+    for (const tokenAddress in chainTokens) {
+      const balanceStr = chainTokens[tokenAddress as Address]
+      if (typeof balanceStr !== 'string') {
+        throw new Error(
+          `Expected string balance for token ${tokenAddress} on chain ${chainId}`,
+        )
+      }
+      tokensSpent[chainId][tokenAddress as Address] = BigInt(balanceStr)
+    }
+  }
+
+  const tokensReceived: TokenFulfillmentStatus[] = response.tokensReceived.map(
+    (entry: any) => {
+      return {
+        tokenAddress: entry.tokenAddress,
+        hasFulfilled: entry.hasFulfilled,
+        amountSpent: BigInt(entry.amountSpent),
+        targetAmount: BigInt(entry.targetAmount),
+        fee: BigInt(entry.fee),
+      }
+    },
+  )
+
+  return {
+    hasFulfilledAll: true,
+    tokensSpent,
+    tokensReceived,
+  }
+}
+
+export function parseInsufficientBalanceResult(
+  response: any,
+): InsufficientBalanceResult {
+  if (!Array.isArray(response.tokenShortfall)) {
+    throw new Error('Expected tokenShortfall to be an array')
+  }
+
+  const tokenShortfall = response.tokenShortfall.map((entry: any) => {
+    return {
+      tokenAddress: entry.tokenAddress,
+      targetAmount: BigInt(entry.targetAmount),
+      amountSpent: BigInt(entry.amountSpent),
+      fee: BigInt(entry.fee),
+      tokenSymbol: entry.tokenSymbol,
+      tokenDecimals: entry.tokenDecimals,
+    }
+  })
+
+  const result: InsufficientBalanceResult = {
+    hasFulfilledAll: false,
+    tokenShortfall,
+    totalTokenShortfallInUSD: BigInt(response.totalTokenShortfallInUSD),
+  }
+  return result
+}
+
+export function parseOrderCostResult(response: any): OrderCostResult {
+  if (typeof response.hasFulfilledAll !== 'boolean') {
+    throw new Error('Missing or invalid hasFulfilledAll field')
+  }
+  if (response.hasFulfilledAll) {
+    return parseOrderCost(response)
+  } else {
+    return parseInsufficientBalanceResult(response)
+  }
 }
 
 export function parsePendingBundleEvent(response: any): BundleEvent {
