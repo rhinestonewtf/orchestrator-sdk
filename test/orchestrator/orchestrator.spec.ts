@@ -1,10 +1,12 @@
-import { encodeFunctionData, erc20Abi, Hex } from 'viem'
+import { encodeFunctionData, erc20Abi, Hex, parseUnits } from 'viem'
 import {
   BundleStatus,
   Execution,
   getOrchestrator,
+  InsufficientBalanceResult,
   MetaIntent,
   Orchestrator,
+  OrderCost,
 } from '../../src'
 import { getTokenAddress } from '../../src/constants'
 import { postMetaIntentWithOwnableValidator } from '../utils/safe7579Signature'
@@ -64,13 +66,52 @@ describe('Orchestrator Service', () => {
     expect(orderPath).toBeDefined()
     expect(orderPath.length).toBe(1)
 
-    const { orderBundle, injectedExecutions } = orderPath[0]
+    const { orderBundle, injectedExecutions, intentCost } = orderPath[0]
 
     expect(orderBundle).toBeDefined()
     expect(injectedExecutions).toBeDefined()
+    expect(intentCost).toBeDefined()
+    expect(intentCost.hasFulfilledAll).toBe(true)
 
     console.log(orderBundle)
     console.log(injectedExecutions)
+  }, 100_000)
+
+  it('should get valid meta intent cost', async () => {
+    const orderCost = await orchestrator.getIntentCost(
+      metaIntent,
+      accountAddress,
+    )
+
+    expect(orderCost).toBeDefined()
+    expect(orderCost.hasFulfilledAll).toBe(true)
+    const { tokensSpent, tokensReceived } = orderCost as OrderCost
+    expect(tokensSpent).toBeDefined()
+    expect(tokensReceived).toBeDefined()
+  }, 100_000)
+
+  it('should get invalid meta intent cost', async () => {
+    const invalidMetaIntent: MetaIntent = {
+      targetChainId: 8453, // Base
+      tokenTransfers: [
+        {
+          tokenAddress: getTokenAddress('USDC', 8453),
+          amount: parseUnits('1000000000', 6)
+        },
+      ],
+      targetAccount: accountAddress,
+      targetExecutions: [execution],
+    }
+    const orderCost = await orchestrator.getIntentCost(
+      invalidMetaIntent,
+      accountAddress,
+    )
+
+    expect(orderCost).toBeDefined()
+    expect(orderCost.hasFulfilledAll).toBe(false)
+    const { tokenShortfall, totalTokenShortfallInUSD } = orderCost as InsufficientBalanceResult
+    expect(tokenShortfall).toBeDefined()
+    expect(totalTokenShortfallInUSD).toBeDefined()
   }, 100_000)
 
   it('should post a meta intent with ownable validator and return a bundle ID', async () => {
@@ -84,7 +125,7 @@ describe('Orchestrator Service', () => {
     expect(bundleResult).toBeDefined()
     expect(bundleResult.length).toBe(1)
     expect(bundleResult[0].bundleId).toBeDefined()
-    expect(bundleResult[0].status).toBe(BundleStatus.RECEIVED)
+    expect(bundleResult[0].status).toBe(BundleStatus.PENDING)
 
     // Wait for 5 seconds
     await new Promise((resolve) => setTimeout(resolve, 5_000))
@@ -94,7 +135,7 @@ describe('Orchestrator Service', () => {
     )
 
     expect(bundleStatus).toBeDefined()
-    expect(bundleStatus.status).toBe(BundleStatus.FILLED)
+    expect(bundleStatus.status).toBe(BundleStatus.COMPLETED)
     expect(bundleStatus.fillTimestamp).toBeDefined()
     expect(bundleStatus.fillTransactionHash).toBeDefined()
     expect(bundleStatus.claims.length).toBe(1)
