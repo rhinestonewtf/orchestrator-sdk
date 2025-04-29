@@ -6,6 +6,11 @@ export type SupportedMainnet = 1 | 8453 | 42161 | 10 | 137
 export type SupportedChain = SupportedMainnet | SupportedTestnet
 export type SupportedTokens = 'ETH' | 'WETH' | 'USDC'
 
+export type AccountAccessListV1 = {
+  chainId: number
+  tokenAddress: Address
+}[]
+
 export type MappedChainTokenAccessList = {
   chainTokens?: {
     [chainId in SupportedChain]?: SupportedTokens[]
@@ -17,9 +22,11 @@ export type UnmappedChainTokenAccessList = {
   tokens?: SupportedTokens[]
 }
 
-export type AccountAccessList =
+export type AccountAccessListV2 =
   | MappedChainTokenAccessList
   | UnmappedChainTokenAccessList
+
+export type AccountAccessList = AccountAccessListV1 | AccountAccessListV2
 
 // TODO: these types need to be updated to the latest contract structs
 export type MultiChainCompact = {
