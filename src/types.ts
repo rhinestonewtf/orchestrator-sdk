@@ -4,6 +4,30 @@ import type { UserOperation } from 'viem/account-abstraction'
 export type SupportedTestnet = 11155111 | 84532 | 421614 | 11155420 | 80002
 export type SupportedMainnet = 1 | 8453 | 42161 | 10 | 137
 export type SupportedChain = SupportedMainnet | SupportedTestnet
+export type SupportedTokens = 'ETH' | 'WETH' | 'USDC'
+export type SupportedTokenIdentitfiers = SupportedTokens | Address
+
+export type AccountAccessListV1 = {
+  chainId: number
+  tokenAddress: Address
+}[]
+
+export type MappedChainTokenAccessList = {
+  chainTokens?: {
+    [chainId in SupportedChain]?: SupportedTokenIdentitfiers[]
+  }
+}
+
+export type UnmappedChainTokenAccessList = {
+  chainIds?: SupportedChain[]
+  tokens?: SupportedTokens[]
+}
+
+export type AccountAccessListV2 =
+  | MappedChainTokenAccessList
+  | UnmappedChainTokenAccessList
+
+export type AccountAccessList = AccountAccessListV1 | AccountAccessListV2
 
 // TODO: these types need to be updated to the latest contract structs
 export type MultiChainCompact = {
@@ -136,10 +160,7 @@ type MetaIntentBase = {
   targetChainId: number
   tokenTransfers: TokenTransfer[]
   targetAccount: Address
-  accountAccessList?: {
-    chainId: number
-    tokenAddress: Address
-  }[]
+  accountAccessList?: AccountAccessList
   omniLock?: boolean
 }
 
@@ -224,10 +245,7 @@ export type OrderFeeInput = {
     amount?: bigint // If no amount is set, max amount of inputs will be converted
     // NOTE: Only one token may have an unset amount
   }[]
-  accountAccessList?: {
-    chainId: number
-    tokenAddress: Address
-  }[]
+  accountAccessList?: AccountAccessList
 }
 
 export type TokenFulfillmentStatus = {

@@ -130,6 +130,12 @@ program
   )
   .addOption(
     new Option(
+      '-v, --access-list-v1 <accountAccessListV1>',
+      'Use account access list v1 format',
+    ).default(false),
+  )
+  .addOption(
+    new Option(
       '--orchestrator-url',
       'The URL of the orchestrator server',
     ).default(ORCHESTRATOR_URL),
@@ -307,16 +313,29 @@ function parseBundleArgs(
   userAddress: string,
   targetChain: string,
   transfers: string[],
-  { targetAccount, executions, userOp, accessList },
+  { targetAccount, executions, userOp, accessList, accessListV1 },
 ): MetaIntent {
   targetAccount ??= userAddress
   let accountAccessList
   if (accessList) {
-    accountAccessList = accessList.map((access: string) => {
-      const [chainId, tokenAddress] = access.split(':')
-      return { chainId: parseInt(chainId), tokenAddress }
-    })
+    if (accessListV1) {
+      accountAccessList = accessList.map((access: string) => {
+          const [chainId, tokenAddress] = access.split(':')
+          return { chainId: parseInt(chainId), tokenAddress }
+      })
+    } else {
+      accountAccessList = {
+        chainTokens: accessList.reduce((acc, access: string) => {
+          const [chainId, tokenSymbol] = access.split(':')
+          if (!acc[parseInt(chainId)]) acc[chainId] = [tokenSymbol]
+          else acc[parseInt(chainId)].push(tokenSymbol)
+          return acc 
+        }, {} as { [chainId: number]: Address[] })
+      }
+    }
   }
+
+  console.log({ accessListV1, accountAccessList })
   const intent: MetaIntent = {
     targetChainId: parseInt(targetChain),
     tokenTransfers: transfers.map((transfer: string) => {
