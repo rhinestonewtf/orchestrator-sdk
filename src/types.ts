@@ -5,6 +5,7 @@ export type SupportedTestnet = 11155111 | 84532 | 421614 | 11155420 | 80002
 export type SupportedMainnet = 1 | 8453 | 42161 | 10 | 137
 export type SupportedChain = SupportedMainnet | SupportedTestnet
 export type SupportedTokens = 'ETH' | 'WETH' | 'USDC'
+export type SupportedTokenIdentitfiers = SupportedTokens | Address
 
 export type AccountAccessListV1 = {
   chainId: number
@@ -13,7 +14,7 @@ export type AccountAccessListV1 = {
 
 export type MappedChainTokenAccessList = {
   chainTokens?: {
-    [chainId in SupportedChain]?: SupportedTokens[]
+    [chainId in SupportedChain]?: SupportedTokenIdentitfiers[]
   }
 }
 
