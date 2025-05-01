@@ -281,6 +281,7 @@ export enum BundleStatus {
   PENDING = 'PENDING', // bundle is created and all claims are pending
   EXPIRED = 'EXPIRED', // bundle is created and call claims are expired
   PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED', // = not completed :D (at least one claim made or fill happened)
+  FILLED = 'FILLED', // fill happened, deposits are not claimed yet
   COMPLETED = 'COMPLETED', // fill tx received, all deposits claimed
   FAILED = 'FAILED', // either fill expired with at least one claim, or claims expired and fill happened
   UNKNOWN = 'UNKNOWN', // marker status in case we change the logic and it is not handled on get status endpoint
