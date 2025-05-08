@@ -9,6 +9,7 @@
   "license": "MIT",
   "main": "./_cjs/index.js",
   "module": "./_esm/index.js",
+  "type": "module",
   "types": "./_types/index.d.ts",
   "typings": "./_types/index.d.ts",
   "exports": {
