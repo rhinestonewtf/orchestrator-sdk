@@ -160,6 +160,7 @@ type MetaIntentBase = {
   targetChainId: number
   tokenTransfers: TokenTransfer[]
   targetAccount: Address
+  targetGasUnits?: bigint
   accountAccessList?: AccountAccessList
   omniLock?: boolean
 }
