@@ -461,6 +461,19 @@ export function isTokenSupported(
   )
 }
 
+export function isTokenAddressSupported(
+  address: Address,
+  chainId: number,
+): boolean {
+  if (!isSupportedChainId(chainId)) {
+    throw new Error(`Chain ${chainId} not supported`)
+  }
+
+  return registry[chainId as SupportedChain].supportedTokens.some(
+    (token: TokenConfig) => token.address.toLowerCase() === address.toLowerCase(),
+  )
+}
+
 export function getTokenAddress(tokenSymbol: string, chainId: number): Address {
   if (!isSupportedChainId(chainId)) {
     throw new Error(`Chain ${chainId} not supported`)
