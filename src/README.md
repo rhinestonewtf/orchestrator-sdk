@@ -2,7 +2,8 @@
 
 **A TypeScript Library for Interacting with the Rhinestone Orchestrator**
 
-> **Important:** The Orchestrator is currently under development. While the SDK and APIs are relatively stable, please anticipate ongoing improvements and potential breaking changes in the coming weeks.
+> [!WARNING]  
+> This SDK is deprecated. Please switch to the [new SDK](http://github.com/rhinestonewtf/sdk) to continue getting updates. See [the migration note](https://github.com/rhinestonewtf/sdk?tab=readme-ov-file#migrating-from-orchestrator-sdk).
 
 ### For Developers
 
