@@ -4,7 +4,7 @@
   "description": "A TypeScript library for using the Rhinestone Orchestrator",
   "author": {
     "name": "Rhinestone",
-    "url": "https://rhinestone.wtf"
+    "url": "https://www.rhinestone.dev"
   },
   "license": "MIT",
   "main": "./_cjs/index.js",
@@ -26,7 +26,7 @@
   "peerDependencies": {
     "viem": "^2.17.8"
   },
-  "homepage": "https://docs.rhinestone.wtf/orchestrator-sdk",
+  "homepage": "https://docs.rhinestone.dev",
   "bugs": {
     "url": "https://github.com/rhinestonewtf/orchestrator-sdk/issues"
   },
