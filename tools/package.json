@@ -4,7 +4,7 @@
   "description": "Command line interface for interacting with the Rhinestone Orchestrator",
   "author": {
     "name": "Rhinestone",
-    "url": "https://rhinestone.wtf"
+    "url": "https://www.rhinestone.dev"
   },
   "license": "MIT",
   "main": "dist/index.js",
