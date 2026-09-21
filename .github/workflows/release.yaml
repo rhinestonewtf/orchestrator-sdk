@@ -63,7 +63,11 @@ jobs:
 
       - name: Use OIDC-capable npm
         # No sudo: keep this ahead of pnpm/action-setup's node on PATH.
-        run: npm install -g npm@latest
+        # Pinned, not @latest: this runs with id-token: write, so an
+        # unreviewed npm release shouldn't be able to touch the publish path.
+        # >=11.5.1 is required for trusted-publishing provenance; bump this
+        # through a reviewed PR.
+        run: npm install -g npm@12.0.2
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1
