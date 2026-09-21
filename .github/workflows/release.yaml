@@ -1,0 +1,83 @@
+name: Release
+
+# Push to main opens/updates a "Version Packages" PR via changesets when
+# changesets are pending; merging that PR (which lands a version bump with
+# no pending changesets) makes the next run on main publish to npm.
+# Publishing uses OIDC trusted publishing, not a long-lived npm token.
+#
+# Actions are SHA-pinned throughout: the release job holds id-token: write
+# for npm trusted publishing, and a mutable tag there could mint this
+# workflow's OIDC token to publish @rhinestone/orchestrator-sdk with forged
+# provenance.
+#
+# Deliberately not gating on `pnpm test` or `pnpm prettier:check`: main's CI
+# (ci.yaml) has been failing to even start since 2026-09-14 (startup_failure,
+# unrelated to this change), and prettier:check currently fails against 8
+# pre-existing files. Gating release on either would mean nothing can ever
+# publish; `pnpm build` is the safety net here.
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9
+          run_install: true
+
+      - name: Build
+        run: pnpm build
+
+  release:
+    name: Release
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9
+          run_install: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+
+      - name: Use OIDC-capable npm
+        # No sudo: keep this ahead of pnpm/action-setup's node on PATH.
+        # Pinned, not @latest: this runs with id-token: write, so an
+        # unreviewed npm release shouldn't be able to touch the publish path.
+        # >=11.5.1 is required for trusted-publishing provenance; bump this
+        # through a reviewed PR.
+        run: npm install -g npm@12.0.2
+
+      - name: Create Release Pull Request or Publish
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1
+        with:
+          commit: "chore: release"
+          title: "chore: release"
+          version: pnpm run changeset:version
+          publish: pnpm run changeset:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Trusted publishing only auto-attaches provenance under narrow
+          # conditions; request it explicitly so it isn't silently skipped.
+          NPM_CONFIG_PROVENANCE: true
